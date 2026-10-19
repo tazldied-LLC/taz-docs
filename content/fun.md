@@ -45,9 +45,9 @@ by default taz tolerates a few non-counting messages in a row, then posts a warn
 chatter and media are two independent switches, so **"delete gifs but leave conversation alone"** is a real setup - that's the point of splitting them. media gets deleted on sight rather than waiting for the limit because a gif pushes the current number off everyone's screen in a way "lol" doesn't. turning `delete_media` off doesn't make gifs exempt, it just makes them count as ordinary chatter like anything else.
 :::
 
-### global leaderboards {#counting-leaderboards}
+### leaderboards {#counting-leaderboards}
 
-two cross-server leaderboards, ranking every server taz is in against each other:
+three leaderboards: one for this server's own counting channels, and two that rank across every server taz is in:
 
 ::: commands
 - `/counting leaderboard channel channel:` - top counters in one of this server's own counting channels - the original per-channel view.
