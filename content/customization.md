@@ -61,7 +61,7 @@ these live under their own command rather than `/general`, alongside youtube not
 ## auto-responses {#auto-responses}
 
 ::: commands
-- `/general autoresponse add phrase: response: enabled:` - taz replies to a phrase automatically, with no prefix and no slash command - somebody just says the thing and she answers.
+- `/general autoresponse add phrase: response: enabled:` - taz replies to a phrase automatically, with no prefix and no slash command - somebody just says the thing and taz answers.
 - `/general autoresponse edit phrase:` - change the reply, or switch one off without deleting it.
 - `/general autoresponse remove | list` - delete one, or see every auto-response in this server.
 :::
