@@ -66,7 +66,10 @@ these live under their own command rather than `/general`, alongside youtube not
 - `/general autoresponse remove | list` - delete one, or see every auto-response in this server.
 :::
 
-a phrase matches as a whole word, so "hi" doesn't fire on "this". the reply takes the same `{user}`, `{username}`, `{server}` and `{memberCount}` placeholders as everything else here. free servers get 10, taz plus is unlimited - and the dashboard's auto-responses section can exempt specific members or roles from them - nobody is exempt by default, Administrator and mod-bypass roles included.
+a phrase matches as a whole word, so "hi" doesn't fire on "this". the reply takes the same `{user}`, `{username}`, `{server}` and `{memberCount}` placeholders as everything else here. however, 
+nobody is exempt by default, Administrator and mod-bypass roles included. to exempt specific members or roles, use the auto-responses section on the dashboard.
+
+free servers get 10 auto-responses. taz plus is unlimited.
 
 ## custom commands {#custom-commands}
 
