@@ -86,7 +86,7 @@ function loadPages(contentDir, md, problems) {
     if (tokens[0]?.type === 'paragraph_open') {
       intro = md.renderer.renderInline(tokens[1].children, md.options, env);
       tokens.splice(0, 3);
-    } else {
+    } else if (slug !== 'index') {
       fail(bodyLine, 'the text after the frontmatter has to start with a paragraph - it becomes the intro under the page title');
     }
 

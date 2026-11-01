@@ -81,6 +81,14 @@ describe('page shape', () => {
     assert.ok(!commandsSection(html).includes('every message earns'));
   });
 
+  it('lets the landing page go without an intro', () => {
+    const index = '---\ntitle: documentation\nheading: taz docs\ndescription: the docs.\n---\n\n::: note\nhi.\n:::\n';
+    const html = renderDocs({ contentDir: contentDir({ 'index.md': index }) })[0].html;
+    assert.ok(!html.includes('docs-intro'));
+    assert.ok(html.includes('<div class="dh-intro">\n    <div class="docs-search"'));
+    assert.ok(html.includes('<span>hi.</span>'));
+  });
+
   it('keeps an explicit heading id and gives the others one from their text', () => {
     const html = renderOne('intro.\n\n## fake permissions {#fake-permissions}\n\n### for members\n\ntext.\n\n## for `/rank` users\n\n## for members\n\ntext.');
     assert.ok(html.includes('<h2 id="fake-permissions">fake permissions</h2>'));

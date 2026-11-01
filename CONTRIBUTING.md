@@ -79,7 +79,7 @@ pages.
 ### the intro
 
 the first paragraph after the frontmatter is the intro under the page title.
-every page needs one.
+every page needs one, except `index.md`, where it's optional.
 
 ### headings
 

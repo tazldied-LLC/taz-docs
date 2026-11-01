@@ -171,8 +171,7 @@ ${body}    </div>
   <header class="dh-head">
     <h1 class="dh-h">${escapeHtml(heading)}</h1>
     <div class="dh-intro">
-      <p class="docs-intro">${intro}</p>
-${SEARCH}
+${intro ? `      <p class="docs-intro">${intro}</p>\n` : ''}${SEARCH}
     </div>
   </header>
 
