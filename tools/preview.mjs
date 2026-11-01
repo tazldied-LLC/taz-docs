@@ -147,3 +147,4 @@ try {
   console.error(error.message);
   process.exitCode = 1;
 }
+// i hate my life
