@@ -31,9 +31,9 @@ describe('the real docs', () => {
     ]);
   });
 
-  it('keep the nav, cta and footer as custom elements for the website to fill in', () => {
+  it('keep the nav, sign-off and footer as custom elements for the website to fill in', () => {
     for (const { slug, html } of pages) {
-      for (const tag of ['x-nav', 'x-cta', 'x-footer']) assert.ok(html.includes(`<${tag}></${tag}>`), `${slug} ${tag}`);
+      for (const tag of ['x-nav', 'x-signoff', 'x-footer']) assert.ok(html.includes(`<${tag}></${tag}>`), `${slug} ${tag}`);
       assert.ok(!html.includes('<nav>') && !html.includes('<footer'), slug);
     }
   });

@@ -18,8 +18,9 @@ const ASSETS = {
   themeToggle: 'js/theme-toggle.js',
   docsSearch: 'js/docsSearch.js',
   docsPage: 'js/pages/docs.js',
+  fit: 'js/fit.js',
   nav: 'partials/nav.html',
-  cta: 'partials/cta.html',
+  signoff: 'partials/signoff.html',
   footer: 'partials/footer.html'
 };
 
@@ -49,7 +50,7 @@ async function fetchAssets() {
     return from === -1 || to === -1 ? null : page.slice(from, to + (end.startsWith('<section') ? 0 : end.length));
   };
   found.nav = between('<nav>', '</nav>');
-  found.cta = between('<section class="cta', '</section>');
+  found.signoff = between('<section class="last', '</section>');
   found.footer = between('<footer', '</footer>');
   const assetUrl = (pattern) => page.match(pattern)?.[1];
   const patterns = [
@@ -58,7 +59,8 @@ async function fetchAssets() {
     ['docsCss', /href="(\/styles\/docs[^"]*\.css)"/],
     ['themeToggle', /src="(\/js\/theme-toggle[^"]*\.js)"/],
     ['docsSearch', /src="(\/js\/docsSearch[^"]*\.js)"/],
-    ['docsPage', /src="(\/js\/pages\/docs[^"]*\.js)"/]
+    ['docsPage', /src="(\/js\/pages\/docs[^"]*\.js)"/],
+    ['fit', /src="(\/js\/fit[^"]*\.js)"/]
   ];
   for (const [name, pattern] of patterns) {
     const url = assetUrl(pattern);
@@ -97,12 +99,12 @@ function writePreview(pages, assets) {
     searchIndex.push(...indexed.entries);
     const html = indexed.html
       .replace('<x-nav></x-nav>', () => assets.nav || '')
-      .replace('<x-cta></x-cta>', () => assets.cta || '')
+      .replace('<x-signoff></x-signoff>', () => assets.signoff || '')
       .replace('<x-footer></x-footer>', () => assets.footer || '');
     write(`docs/${page.slug}.html`, html);
   }
   write('docs/search-index.json', JSON.stringify(searchIndex));
-  for (const name of ['css', 'marketingCss', 'docsCss', 'themeToggle', 'docsSearch', 'docsPage']) {
+  for (const name of ['css', 'marketingCss', 'docsCss', 'themeToggle', 'fit', 'docsSearch', 'docsPage']) {
     if (assets[name]) write(ASSETS[name], assets[name]);
   }
 }
@@ -145,4 +147,3 @@ try {
   console.error(error.message);
   process.exitCode = 1;
 }
-// i hate my life

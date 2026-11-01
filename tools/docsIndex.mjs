@@ -50,7 +50,7 @@ export function indexDocsPage(html, url) {
   // the page's content).
   const proseStart = withIds.search(/<div class="docs-prose/i);
   const body = proseStart >= 0 ? withIds.slice(proseStart) : '';
-  const contentEnd = body.search(/<nav class="docs-pager|<x-cta>|<x-footer>|<script/i);
+  const contentEnd = body.search(/<nav class="docs-pager|<\/main>|<x-footer>|<script/i);
   const content = contentEnd >= 0 ? body.slice(0, contentEnd) : body;
   const parts = content.split(/(?=<h[23][^>]*>)/i);
   for (const part of parts) {

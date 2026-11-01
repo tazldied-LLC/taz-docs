@@ -4,7 +4,7 @@ export const SITE_PATHS = ['/', '/commands', '/dashboard', '/invite', '/plus', '
 // "on this page" list or previous/next links around them.
 function contentLinks(html) {
   const start = html.indexOf('<p class="docs-intro">');
-  const end = html.search(/<nav class="docs-pager"|<x-cta>/);
+  const end = html.search(/<nav class="docs-pager"|<\/main>/);
   const content = html.slice(start, end).replace(/<nav class="docs-toc"[\s\S]*?<\/nav>/, '');
   return [...content.matchAll(/<a\b[^>]*\bhref="([^"]*)"/g)].map((m) => m[1].replace(/&amp;/g, '&'));
 }

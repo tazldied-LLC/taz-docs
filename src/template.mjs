@@ -87,11 +87,12 @@ const SEARCH = `    <div class="docs-search" role="search">
     </div>`;
 
 const TAIL = `
-<x-cta></x-cta>
+<x-signoff></x-signoff>
 
 <x-footer></x-footer>
 
 <script src="/js/theme-toggle.js"></script>
+<script src="/js/fit.js"></script>
 <script src="/js/docsSearch.js"></script>
 <script src="/js/pages/docs.js"></script>
 
