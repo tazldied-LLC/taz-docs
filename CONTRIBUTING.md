@@ -71,7 +71,10 @@ card: xp, level roles, booster bonuses, channels that cost xp, voice xp, prestig
   one-line summary.
 
 `index.md` (the landing page) has `title`, `heading` and `description`
-instead. its list of pages comes from the other pages.
+instead. `heading` is the docs' name: the landing page's big title, and the
+link back to it in every page's sidebar and breadcrumb. `title` is only for
+the browser tab and search results. its list of pages comes from the other
+pages.
 
 ### the intro
 

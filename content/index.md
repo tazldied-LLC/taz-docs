@@ -1,6 +1,6 @@
 ---
 title: documentation
-heading: how taz actually works
+heading: taz docs
 description: a growing reference for every module - what each command does, how the settings fit together, and what's free vs. taz plus.
 ---
 

@@ -41,12 +41,13 @@ export function renderDocs({ contentDir }) {
   if (problems.length) throw new DocsError(problems);
 
   const cards = rest.map((page) => ({ href: page.url, icon: page.data.icon, title: page.data.title, desc: page.data.card }));
+  const home = { href: index.url, title: index.data.heading };
   const rendered = [index, ...rest].map((page) => {
     const fields = { ...page.data, url: SITE_ORIGIN + page.url, intro: page.intro, body: page.body };
     const at = rest.indexOf(page);
     const html = page.slug === 'index'
       ? indexPage({ ...fields, cards })
-      : contentPage({ ...fields, path: page.url, toc: page.toc, pages: cards, prev: cards[at - 1] ?? null, next: cards[at + 1] ?? null });
+      : contentPage({ ...fields, path: page.url, toc: page.toc, home, pages: cards, prev: cards[at - 1] ?? null, next: cards[at + 1] ?? null });
     return { slug: page.slug, url: page.url, html, anchors: page.anchors };
   });
   return rendered;

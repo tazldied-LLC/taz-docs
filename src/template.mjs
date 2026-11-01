@@ -42,7 +42,7 @@ function head({ title, description, url }) {
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/styles/main.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <link rel="stylesheet" href="/styles/marketing.css" />
@@ -116,23 +116,22 @@ ${items}      </ol>
 `;
 }
 
-function pager(prev, next) {
+function pager(prev, next, home) {
   const link = (page, rel, label) => (page
     ? `      <a class="docs-${rel}" href="${page.href}" rel="${rel}"><span>${label}</span>${escapeHtml(page.title)}</a>\n`
     : '');
-  const back = { href: '/docs', title: 'documentation' };
   return `    <nav class="docs-pager" aria-label="more docs">
-${link(prev || back, 'prev', prev ? 'previous' : 'back to')}${link(next, 'next', 'next')}    </nav>
+${link(prev || home, 'prev', prev ? 'previous' : 'back to')}${link(next, 'next', 'next')}    </nav>
 `;
 }
 
-export function contentPage({ title, description, url, path, intro, body, toc, pages, prev, next }) {
+export function contentPage({ title, description, url, path, intro, body, toc, home, pages, prev, next }) {
   return `${head({ title: `${title} docs - taz`, description, url })}
 <div class="docs wrap">
   <aside class="docs-side">
 ${SEARCH}
     <nav class="docs-pages" aria-label="docs pages">
-      <a class="docs-pages-home" href="/docs">documentation</a>
+      <a class="docs-pages-home" href="${home.href}">${escapeHtml(home.title)}</a>
       <ol>
 ${pageList(pages, path)}      </ol>
     </nav>
@@ -140,13 +139,13 @@ ${pageList(pages, path)}      </ol>
 
   <main id="main" class="docs-main">
     <header class="docs-head">
-      <p class="docs-crumb"><a href="/docs">documentation</a> / ${escapeHtml(title)}</p>
+      <p class="docs-crumb"><a href="${home.href}">${escapeHtml(home.title)}</a> / ${escapeHtml(title)}</p>
       <h1 class="docs-h">${escapeHtml(title)}</h1>
       <p class="docs-intro">${intro}</p>
     </header>
 ${onThisPage(toc)}    <div class="docs-prose">
 ${body}    </div>
-${pager(prev, next)}  </main>
+${pager(prev, next, home)}  </main>
 </div>
 ${TAIL}`;
 }
@@ -169,7 +168,6 @@ ${body}    </div>
   return `${head({ title: `${title} - taz`, description, url })}
 <main id="main" class="docs-home wrap">
   <header class="dh-head">
-    <p class="dh-label">${escapeHtml(title)}</p>
     <h1 class="dh-h">${escapeHtml(heading)}</h1>
     <div class="dh-intro">
       <p class="docs-intro">${intro}</p>

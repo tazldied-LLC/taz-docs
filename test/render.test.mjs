@@ -54,16 +54,18 @@ describe('the real docs', () => {
     assert.ok(list.includes('<i class="fas fa-star" aria-hidden="true"></i>'));
   });
 
-  it('list every page in the sidebar, marking the one being read, with previous and next links', () => {
+  it('list every page in the sidebar under the landing page\'s heading, marking the one being read, with previous and next links', () => {
     const fun = pages.find((p) => p.slug === 'fun').html;
     const sidebar = fun.slice(fun.indexOf('<nav class="docs-pages"'), fun.indexOf('</nav>', fun.indexOf('<nav class="docs-pages"')));
     assert.deepEqual([...sidebar.matchAll(/<li><a href="([^"]+)"/g)].map((m) => m[1]), pages.slice(1).map((p) => p.url));
+    assert.ok(sidebar.includes('<a class="docs-pages-home" href="/docs">taz docs</a>'));
     assert.ok(sidebar.includes('<a href="/docs/fun" aria-current="page">fun</a>'));
+    assert.ok(fun.includes('<p class="docs-crumb"><a href="/docs">taz docs</a> / fun</p>'));
     assert.ok(fun.includes('<a class="docs-prev" href="/docs/tickets-and-tools" rel="prev"><span>previous</span>tickets &amp; tools</a>'));
     assert.ok(fun.includes('<a class="docs-next" href="/docs/customization" rel="next"><span>next</span>customization</a>'));
 
     const first = pages[1].html;
-    assert.ok(first.includes('<a class="docs-prev" href="/docs" rel="prev"><span>back to</span>documentation</a>'));
+    assert.ok(first.includes('<a class="docs-prev" href="/docs" rel="prev"><span>back to</span>taz docs</a>'));
     assert.ok(!pages[pages.length - 1].html.includes('class="docs-next"'));
   });
 });
