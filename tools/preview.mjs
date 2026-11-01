@@ -13,8 +13,11 @@ const PREVIEW_DIR = path.join(ROOT, 'out', 'preview');
 const PORT = Number(process.env.PORT) || 4321;
 const ASSETS = {
   css: 'styles/main.css',
+  marketingCss: 'styles/marketing.css',
+  docsCss: 'styles/docs.css',
   themeToggle: 'js/theme-toggle.js',
   docsSearch: 'js/docsSearch.js',
+  docsPage: 'js/pages/docs.js',
   nav: 'partials/nav.html',
   cta: 'partials/cta.html',
   footer: 'partials/footer.html'
@@ -45,11 +48,19 @@ async function fetchAssets() {
     const to = page.indexOf(end, from);
     return from === -1 || to === -1 ? null : page.slice(from, to + (end.startsWith('<section') ? 0 : end.length));
   };
-  found.nav = between('<nav', '<section class="cmd-page-hero');
+  found.nav = between('<nav>', '</nav>');
   found.cta = between('<section class="cta', '</section>');
   found.footer = between('<footer', '</footer>');
   const assetUrl = (pattern) => page.match(pattern)?.[1];
-  for (const [name, pattern] of [['css', /href="(\/styles\/main[^"]*\.css)"/], ['themeToggle', /src="(\/js\/theme-toggle[^"]*\.js)"/], ['docsSearch', /src="(\/js\/docsSearch[^"]*\.js)"/]]) {
+  const patterns = [
+    ['css', /href="(\/styles\/main[^"]*\.css)"/],
+    ['marketingCss', /href="(\/styles\/marketing[^"]*\.css)"/],
+    ['docsCss', /href="(\/styles\/docs[^"]*\.css)"/],
+    ['themeToggle', /src="(\/js\/theme-toggle[^"]*\.js)"/],
+    ['docsSearch', /src="(\/js\/docsSearch[^"]*\.js)"/],
+    ['docsPage', /src="(\/js\/pages\/docs[^"]*\.js)"/]
+  ];
+  for (const [name, pattern] of patterns) {
     const url = assetUrl(pattern);
     if (url) found[name] = await fetchText(SITE + url);
   }
@@ -91,9 +102,9 @@ function writePreview(pages, assets) {
     write(`docs/${page.slug}.html`, html);
   }
   write('docs/search-index.json', JSON.stringify(searchIndex));
-  if (assets.css) write(ASSETS.css, assets.css);
-  if (assets.themeToggle) write(ASSETS.themeToggle, assets.themeToggle);
-  if (assets.docsSearch) write(ASSETS.docsSearch, assets.docsSearch);
+  for (const name of ['css', 'marketingCss', 'docsCss', 'themeToggle', 'docsSearch', 'docsPage']) {
+    if (assets[name]) write(ASSETS[name], assets[name]);
+  }
 }
 
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8' };

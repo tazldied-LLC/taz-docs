@@ -62,14 +62,16 @@ card: xp, level roles, booster bonuses, channels that cost xp, voice xp, prestig
 ---
 ```
 
-- `title` - the page title, the breadcrumb and the browser tab.
+- `title` - the page title, the breadcrumb, the sidebar, the previous/next
+  links and the browser tab.
 - `description` - what google and link previews show. one sentence.
-- `order`, `icon`, `card` - the page's card on the docs landing page: where it
-  sits, a [font awesome 5](https://fontawesome.com/v5/search?m=free) icon, and a
+- `order`, `icon`, `card` - the page's entry on the docs landing page: where it
+  sits (which is also its place in the sidebar and the previous/next links), a
+  [font awesome 5](https://fontawesome.com/v5/search?m=free) icon, and a
   one-line summary.
 
 `index.md` (the landing page) has `title`, `heading` and `description`
-instead. its cards come from the other pages.
+instead. its list of pages comes from the other pages.
 
 ### the intro
 
@@ -79,7 +81,8 @@ every page needs one.
 ### headings
 
 `##` for sections, `###` for bits inside them. the page title is the only `#`,
-and that comes from the frontmatter.
+and that comes from the frontmatter. every `##` shows up in the page's "on this
+page" list, so keep them short.
 
 if a section might get linked to, give it an id:
 
@@ -122,7 +125,7 @@ unit:`), and use `|` between subcommands.
 
 ### notes
 
-a note is the highlighted box, for the thing people miss or get wrong:
+a note is the highlighted block, for the thing people miss or get wrong:
 
 ```md
 ::: note

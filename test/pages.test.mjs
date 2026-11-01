@@ -12,7 +12,7 @@ const pages = renderDocs({ contentDir: path.join(import.meta.dirname, '..', 'con
 describe('every real page indexes more than one section', () => {
   it('has an intro and at least one heading in its commands section', () => {
     for (const { slug, html } of pages) {
-      assert.match(html, /<p class="section-body">[^<\s][\s\S]*?<\/p>/, slug);
+      assert.match(html, /<p class="docs-intro">[^<\s][\s\S]*?<\/p>/, slug);
       assert.match(commandsSection(html), /<h[23][\s>]/, slug);
     }
   });

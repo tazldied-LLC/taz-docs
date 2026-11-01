@@ -1,5 +1,6 @@
 import MarkdownIt from 'markdown-it';
 import container from 'markdown-it-container';
+import { slugify } from './slug.mjs';
 
 export const NOTE_ICONS = {
   info: 'fa-info-circle',
@@ -43,6 +44,7 @@ export function createMarkdown() {
   md.core.ruler.push('taz_docs', (state) => {
     checkInline(state);
     state.tokens = restructure(state);
+    addHeadingIds(state);
   });
 
   md.renderer.rules.docs_cmd_list_open = () => '<div class="docs-cmd-list">\n';
@@ -53,8 +55,7 @@ export function createMarkdown() {
   };
   md.renderer.rules.docs_note = (tokens, idx, options, env, self) => {
     const { icon, children } = tokens[idx].meta;
-    const style = env.noteStyle ? ` style="${env.noteStyle}"` : '';
-    return `<div class="docs-note"${style}>\n<i class="fas ${icon}" aria-hidden="true"></i>\n<span>${self.renderInline(children, options, env)}</span>\n</div>\n`;
+    return `<div class="docs-note">\n<i class="fas ${icon}" aria-hidden="true"></i>\n<span>${self.renderInline(children, options, env)}</span>\n</div>\n`;
   };
   return md;
 }
@@ -131,6 +132,24 @@ function checkHeading(state, open, inline) {
   open.attrSet('id', id);
   last.content = last.content.slice(0, match.index);
   if (!last.content) inline.children.pop();
+}
+
+function headingText(inline) {
+  return inline.children.filter((t) => t.type === 'text' || t.type === 'code_inline').map((t) => t.content).join('');
+}
+
+// Every heading gets an id for the page's "on this page" list. Only {#id}s are
+// promised to last (env.ids), so links between pages may only use those.
+function addHeadingIds(state) {
+  const used = new Set(state.env.ids);
+  state.tokens.forEach((token, i) => {
+    if (token.type !== 'heading_open' || token.attrGet('id')) return;
+    const base = slugify(headingText(state.tokens[i + 1]));
+    let id = base;
+    for (let n = 2; used.has(id); n += 1) id = `${base}-${n}`;
+    used.add(id);
+    token.attrSet('id', id);
+  });
 }
 
 function containerTokens(state, open, inner) {

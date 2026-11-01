@@ -25,5 +25,5 @@ export function contentDir(files) {
 }
 
 export function commandsSection(html) {
-  return html.slice(html.indexOf('<section class="commands-page'), html.indexOf('<x-cta>'));
+  return html.slice(html.indexOf('<div class="docs-prose">'), html.indexOf('<nav class="docs-pager"'));
 }

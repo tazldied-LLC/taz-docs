@@ -42,9 +42,11 @@ function head({ title, description, url }) {
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/styles/main.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <link rel="stylesheet" href="/styles/marketing.css" />
+  <link rel="stylesheet" href="/styles/docs.css" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -70,7 +72,8 @@ function head({ title, description, url }) {
 }
   </script>
 </head>
-<body>
+<body class="marketing docs-page">
+<a class="skip" href="#main">skip to content</a>
 
 <x-nav></x-nav>
 `;
@@ -78,7 +81,8 @@ function head({ title, description, url }) {
 
 const SEARCH = `    <div class="docs-search" role="search">
       <i class="fas fa-search docs-search-icon" aria-hidden="true"></i>
-      <input type="search" class="docs-search-input" placeholder="search the docs (press /)" aria-label="search the docs" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="docs-search-results" />
+      <input type="search" class="docs-search-input" placeholder="search the docs" aria-label="search the docs" aria-keyshortcuts="/" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="docs-search-results" />
+      <kbd class="docs-search-key" aria-hidden="true">/</kbd>
       <div class="docs-search-results" id="docs-search-results" role="listbox" hidden></div>
     </div>`;
 
@@ -89,66 +93,95 @@ const TAIL = `
 
 <script src="/js/theme-toggle.js"></script>
 <script src="/js/docsSearch.js"></script>
-<script>
-  const revealEls = document.querySelectorAll('.reveal');
-  // A threshold is a fraction of the element, which a section taller than the
-  // screen may never reach; a margin works at any height.
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { rootMargin: '0px 0px -10% 0px' });
-  revealEls.forEach(el => observer.observe(el));
-</script>
+<script src="/js/pages/docs.js"></script>
 
 </body>
 </html>
 `;
 
-export function contentPage({ title, description, url, intro, body }) {
-  return `${head({ title: `${title} docs - taz`, description, url })}
-<section class="cmd-page-hero reveal">
-  <div class="cmd-page-hero-inner">
-    <p class="docs-breadcrumb"><a href="/docs">documentation</a> / ${escapeHtml(title)}</p>
-    <h1 class="section-title">${escapeHtml(title)}</h1>
-    <p class="section-body">${intro}</p>
-${SEARCH}
-  </div>
-</section>
+function pageList(pages, path) {
+  return pages.map((page) => `        <li><a href="${page.href}"${page.href === path ? ' aria-current="page"' : ''}>${escapeHtml(page.title)}</a></li>
+`).join('');
+}
 
-<section class="commands-page reveal">
-  <div class="commands-inner docs-prose">
-${body}  </div>
-</section>
+function onThisPage(toc) {
+  if (toc.length < 2) return '';
+  const items = toc.map((h) => `        <li><a href="#${h.id}">${h.html}</a></li>
+`).join('');
+  return `    <nav class="docs-toc" aria-label="on this page">
+      <p class="docs-toc-h">on this page</p>
+      <ol>
+${items}      </ol>
+    </nav>
+`;
+}
+
+function pager(prev, next) {
+  const link = (page, rel, label) => (page
+    ? `      <a class="docs-${rel}" href="${page.href}" rel="${rel}"><span>${label}</span>${escapeHtml(page.title)}</a>\n`
+    : '');
+  const back = { href: '/docs', title: 'documentation' };
+  return `    <nav class="docs-pager" aria-label="more docs">
+${link(prev || back, 'prev', prev ? 'previous' : 'back to')}${link(next, 'next', 'next')}    </nav>
+`;
+}
+
+export function contentPage({ title, description, url, path, intro, body, toc, pages, prev, next }) {
+  return `${head({ title: `${title} docs - taz`, description, url })}
+<div class="docs wrap">
+  <aside class="docs-side">
+${SEARCH}
+    <nav class="docs-pages" aria-label="docs pages">
+      <a class="docs-pages-home" href="/docs">documentation</a>
+      <ol>
+${pageList(pages, path)}      </ol>
+    </nav>
+  </aside>
+
+  <main id="main" class="docs-main">
+    <header class="docs-head">
+      <p class="docs-crumb"><a href="/docs">documentation</a> / ${escapeHtml(title)}</p>
+      <h1 class="docs-h">${escapeHtml(title)}</h1>
+      <p class="docs-intro">${intro}</p>
+    </header>
+${onThisPage(toc)}    <div class="docs-prose">
+${body}    </div>
+${pager(prev, next)}  </main>
+</div>
 ${TAIL}`;
 }
 
 export function indexPage({ title, heading, description, url, intro, body, cards }) {
-  const grid = cards.map((card) => `      <a class="docs-index-card" href="${card.href}">
+  const list = cards.map((card) => `      <li><a href="${card.href}">
         <i class="fas ${card.icon}" aria-hidden="true"></i>
-        <div class="docs-index-card-title">${escapeHtml(card.title)}</div>
-        <div class="docs-index-card-desc">${escapeHtml(card.desc)}</div>
-      </a>
+        <span class="dh-t">${escapeHtml(card.title)}</span>
+        <span class="dh-d">${escapeHtml(card.desc)}</span>
+      </a></li>
 `).join('');
+  const more = body ? `
+  <section class="dh-more" aria-labelledby="dh-more-h">
+    <h2 class="dh-more-h" id="dh-more-h">good to know</h2>
+    <div class="docs-prose">
+${body}    </div>
+  </section>
+` : '';
 
   return `${head({ title: `${title} - taz`, description, url })}
-<section class="cmd-page-hero reveal">
-  <div class="cmd-page-hero-inner">
-    <p class="section-label">${escapeHtml(title)}</p>
-    <h1 class="section-title">${escapeHtml(heading)}</h1>
-    <p class="section-body">${intro}</p>
+<main id="main" class="docs-home wrap">
+  <header class="dh-head">
+    <p class="dh-label">${escapeHtml(title)}</p>
+    <h1 class="dh-h">${escapeHtml(heading)}</h1>
+    <div class="dh-intro">
+      <p class="docs-intro">${intro}</p>
 ${SEARCH}
-  </div>
-</section>
+    </div>
+  </header>
 
-<section class="commands-page reveal">
-  <div class="commands-inner">
-${body}    <div class="docs-index-grid">
-${grid}    </div>
-  </div>
-</section>
+  <section class="dh-pages" aria-labelledby="dh-pages-h">
+    <h2 class="sr" id="dh-pages-h">every page</h2>
+    <ol class="dh-list">
+${list}    </ol>
+  </section>
+${more}</main>
 ${TAIL}`;
 }

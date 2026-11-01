@@ -1,3 +1,5 @@
+import { slugify } from '../src/slug.mjs';
+
 const SECTION_TEXT_LIMIT = 1500;
 
 const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', '#39': "'" };
@@ -16,9 +18,7 @@ export function htmlToText(html) {
     .trim();
 }
 
-export function slugify(text) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'section';
-}
+export { slugify };
 
 const HEADING = /<(h[23])([^>]*)>([\s\S]*?)<\/\1>/gi;
 
@@ -26,7 +26,7 @@ const HEADING = /<(h[23])([^>]*)>([\s\S]*?)<\/\1>/gi;
 export function indexDocsPage(html, url) {
   const titleMatch = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
   const pageTitle = titleMatch ? htmlToText(titleMatch[1]) : url;
-  const introMatch = html.match(/<p class="section-body">([\s\S]*?)<\/p>/i);
+  const introMatch = html.match(/<p class="(?:docs-intro|section-body)">([\s\S]*?)<\/p>/i);
 
   const usedIds = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]));
   const withIds = html.replace(HEADING, (match, tag, attrs, inner) => {
@@ -48,8 +48,9 @@ export function indexDocsPage(html, url) {
 
   // Each section is everything from its heading to the next one (or the end of
   // the page's content).
-  const body = withIds.slice(withIds.search(/<section class="commands-page/i));
-  const contentEnd = body.search(/<x-cta>|<x-footer>|<script/i);
+  const proseStart = withIds.search(/<div class="docs-prose/i);
+  const body = withIds.slice(proseStart >= 0 ? proseStart : withIds.search(/<section class="commands-page/i));
+  const contentEnd = body.search(/<nav class="docs-pager|<x-cta>|<x-footer>|<script/i);
   const content = contentEnd >= 0 ? body.slice(0, contentEnd) : body;
   const parts = content.split(/(?=<h[23][^>]*>)/i);
   for (const part of parts) {
