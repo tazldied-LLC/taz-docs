@@ -116,6 +116,13 @@ describe('page shape', () => {
     assert.ok(section.includes('<div class="docs-cmd"><code>/leaderboard</code> (or <code>/lb</code>)<div class="docs-cmd-desc">the top members.</div></div>'));
   });
 
+  it('puts a purple + in front of every "taz plus"', () => {
+    const plus = '<span class="docs-plus" aria-hidden="true">+</span>';
+    const html = renderOne('free servers get 3, taz plus is unlimited.\n\n::: commands\n- taz plus - unlimited watched channels.\n:::');
+    assert.ok(html.includes(`<p class="docs-intro">free servers get 3, ${plus}taz plus is unlimited.</p>`));
+    assert.ok(commandsSection(html).includes(`<div class="docs-cmd">${plus}taz plus<div class="docs-cmd-desc">unlimited watched channels.</div></div>`));
+  });
+
   it('renders a note with the info icon unless another kind is named', () => {
     const html = renderOne('intro.\n\n::: note\nplain.\n:::\n\n::: note warning\ncareful.\n:::');
     assert.ok(html.includes('<i class="fas fa-info-circle" aria-hidden="true"></i>\n<span>plain.</span>'));

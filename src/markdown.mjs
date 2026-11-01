@@ -31,6 +31,7 @@ const BLOCK_NAMES = {
 };
 
 const HEADING_ID = /\s*\{#([^}]*)\}\s*$/;
+const TAZ_PLUS = /\btaz plus\b/g;
 const VALID_ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 export function isAllowedHref(href) {
@@ -43,6 +44,7 @@ export function createMarkdown() {
   md.use(container, 'block', { validate: () => true });
   md.core.ruler.push('taz_docs', (state) => {
     checkInline(state);
+    markPlus(state);
     state.tokens = restructure(state);
     addHeadingIds(state);
   });
@@ -53,6 +55,7 @@ export function createMarkdown() {
     const { title, desc } = tokens[idx].meta;
     return `<div class="docs-cmd">${self.renderInline(title, options, env)}<div class="docs-cmd-desc">${self.renderInline(desc, options, env)}</div></div>\n`;
   };
+  md.renderer.rules.docs_plus = () => '<span class="docs-plus" aria-hidden="true">+</span>';
   md.renderer.rules.docs_note = (tokens, idx, options, env, self) => {
     const { icon, children } = tokens[idx].meta;
     return `<div class="docs-note">\n<i class="fas ${icon}" aria-hidden="true"></i>\n<span>${self.renderInline(children, options, env)}</span>\n</div>\n`;
@@ -76,6 +79,25 @@ function checkInline(state) {
         report(state, block, `link "${token.attrGet('href')}" isn't allowed - use https://..., a site path like /docs/leveling, or #an-anchor`);
       }
     }
+  }
+}
+
+// Every "taz plus" gets the site's purple + in front of it.
+function markPlus(state) {
+  for (const block of state.tokens) {
+    if (block.type !== 'inline') continue;
+    block.children = block.children.flatMap((token) => {
+      if (token.type !== 'text' || !token.content.includes('taz plus')) return [token];
+      const out = [];
+      let from = 0;
+      for (const match of token.content.matchAll(TAZ_PLUS)) {
+        if (match.index > from) out.push(textLike(token, token.content.slice(from, match.index)));
+        out.push(new state.Token('docs_plus', '', 0));
+        from = match.index;
+      }
+      out.push(textLike(token, token.content.slice(from)));
+      return out;
+    });
   }
 }
 
