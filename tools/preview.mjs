@@ -19,6 +19,7 @@ const ASSETS = {
   docsSearch: 'js/docsSearch.js',
   docsPage: 'js/pages/docs.js',
   fit: 'js/fit.js',
+  pen: 'js/pen.js',
   nav: 'partials/nav.html',
   signoff: 'partials/signoff.html',
   footer: 'partials/footer.html'
@@ -60,7 +61,8 @@ async function fetchAssets() {
     ['themeToggle', /src="(\/js\/theme-toggle[^"]*\.js)"/],
     ['docsSearch', /src="(\/js\/docsSearch[^"]*\.js)"/],
     ['docsPage', /src="(\/js\/pages\/docs[^"]*\.js)"/],
-    ['fit', /src="(\/js\/fit[^"]*\.js)"/]
+    ['fit', /src="(\/js\/fit[^"]*\.js)"/],
+    ['pen', /src="(\/js\/pen[^"]*\.js)"/]
   ];
   for (const [name, pattern] of patterns) {
     const url = assetUrl(pattern);
@@ -104,7 +106,7 @@ function writePreview(pages, assets) {
     write(`docs/${page.slug}.html`, html);
   }
   write('docs/search-index.json', JSON.stringify(searchIndex));
-  for (const name of ['css', 'marketingCss', 'docsCss', 'themeToggle', 'fit', 'docsSearch', 'docsPage']) {
+  for (const name of ['css', 'marketingCss', 'docsCss', 'themeToggle', 'fit', 'pen', 'docsSearch', 'docsPage']) {
     if (assets[name]) write(ASSETS[name], assets[name]);
   }
 }
