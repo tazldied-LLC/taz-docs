@@ -31,10 +31,10 @@ describe('the real docs', () => {
     ]);
   });
 
-  it('keep the nav, cta and footer as custom elements for the website to fill in', () => {
+  it('keep the nav, sign-off and footer as custom elements for the website to fill in', () => {
     for (const { slug, html } of pages) {
-      for (const tag of ['x-nav', 'x-cta', 'x-footer']) assert.ok(html.includes(`<${tag}></${tag}>`), `${slug} ${tag}`);
-      assert.ok(!html.includes('<nav') && !html.includes('<footer'), slug);
+      for (const tag of ['x-nav', 'x-signoff', 'x-footer']) assert.ok(html.includes(`<${tag}></${tag}>`), `${slug} ${tag}`);
+      assert.ok(!html.includes('<nav>') && !html.includes('<footer'), slug);
     }
   });
 
@@ -45,11 +45,34 @@ describe('the real docs', () => {
     assert.ok(urls.every((url) => url.startsWith('https://taz.bot/docs')));
   });
 
-  it('build the index grid from every other page\'s frontmatter', () => {
+  it('build the index list from every other page\'s frontmatter', () => {
     const index = pages[0].html;
-    const cards = [...index.matchAll(/<a class="docs-index-card" href="([^"]+)">/g)].map((m) => m[1]);
-    assert.deepEqual(cards, pages.slice(1).map((p) => p.url));
-    assert.ok(index.includes('<div class="docs-index-card-title">tickets &amp; tools</div>'));
+    const list = index.slice(index.indexOf('<ol class="dh-list">'), index.indexOf('</ol>'));
+    const links = [...list.matchAll(/<li><a href="([^"]+)">/g)].map((m) => m[1]);
+    assert.deepEqual(links, pages.slice(1).map((p) => p.url));
+    assert.ok(list.includes('<span class="dh-t">tickets &amp; tools</span>'));
+    assert.ok(list.includes('<i class="fas fa-star" aria-hidden="true"></i>'));
+  });
+
+  it('list every page in the sidebar under the landing page\'s heading, marking the one being read, with previous and next links', () => {
+    const fun = pages.find((p) => p.slug === 'fun').html;
+    const sidebar = fun.slice(fun.indexOf('<nav class="docs-pages"'), fun.indexOf('</nav>', fun.indexOf('<nav class="docs-pages"')));
+    assert.deepEqual([...sidebar.matchAll(/<li><a href="([^"]+)"/g)].map((m) => m[1]), pages.slice(1).map((p) => p.url));
+    assert.ok(sidebar.includes('<a class="docs-pages-home" href="/docs">taz docs</a>'));
+    assert.ok(sidebar.includes('<a href="/docs/fun" aria-current="page">fun</a>'));
+    assert.ok(fun.includes('<p class="docs-crumb"><a href="/docs">taz docs</a> / fun</p>'));
+    assert.ok(fun.includes('<a class="docs-prev" href="/docs/tickets-and-tools" rel="prev"><span>previous</span>tickets &amp; tools</a>'));
+    assert.ok(fun.includes('<a class="docs-next" href="/docs/customization" rel="next"><span>next</span>customization</a>'));
+
+    const first = pages[1].html;
+    assert.ok(first.includes('<a class="docs-prev" href="/docs" rel="prev"><span>back to</span>taz docs</a>'));
+    assert.ok(!pages[pages.length - 1].html.includes('class="docs-next"'));
+  });
+
+  it('link every article, but not the landing page, to its file on github for editing', () => {
+    const fun = pages.find((p) => p.slug === 'fun').html;
+    assert.ok(fun.includes('<a href="https://github.com/tazldied-LLC/taz-docs/edit/staging/content/fun.md">edit this page on github</a>'));
+    assert.ok(!pages[0].html.includes('class="docs-edit"'));
   });
 });
 
@@ -60,14 +83,34 @@ describe('page shape', () => {
     assert.ok(html.includes('<meta name="description" content="meta &quot;text&quot; &amp; more" />'));
     assert.ok(html.includes('"description": "meta \\"text\\" & more"'));
     assert.ok(html.includes('<link rel="canonical" href="https://taz.bot/docs/leveling" />'));
-    assert.ok(html.includes('<p class="section-body">every message earns <strong>xp</strong>.</p>'));
+    assert.ok(html.includes('<p class="docs-intro">every message earns <strong>xp</strong>.</p>'));
     assert.ok(!commandsSection(html).includes('every message earns'));
   });
 
-  it('keeps an explicit heading id and leaves the others for the website to fill in', () => {
-    const html = renderOne('intro.\n\n## fake permissions {#fake-permissions}\n\n### for members\n\ntext.');
+  it('lets the landing page go without an intro', () => {
+    const index = '---\ntitle: documentation\nheading: taz docs\ndescription: the docs.\n---\n\n::: note\nhi.\n:::\n';
+    const html = renderDocs({ contentDir: contentDir({ 'index.md': index }) })[0].html;
+    assert.ok(!html.includes('docs-intro'));
+    assert.ok(html.includes('<div class="dh-intro">\n    <div class="docs-search"'));
+    assert.ok(html.includes('<span>hi.</span>'));
+  });
+
+  it('keeps an explicit heading id and gives the others one from their text', () => {
+    const html = renderOne('intro.\n\n## fake permissions {#fake-permissions}\n\n### for members\n\ntext.\n\n## for `/rank` users\n\n## for members\n\ntext.');
     assert.ok(html.includes('<h2 id="fake-permissions">fake permissions</h2>'));
-    assert.ok(html.includes('<h3>for members</h3>'));
+    assert.ok(html.includes('<h3 id="for-members">for members</h3>'));
+    assert.ok(html.includes('<h2 id="for-rank-users">for <code>/rank</code> users</h2>'));
+    assert.ok(html.includes('<h2 id="for-members-2">for members</h2>'));
+  });
+
+  it('lists the page\'s ## headings under "on this page", once there are two', () => {
+    const html = renderOne('intro.\n\n## voice xp {#voice-xp}\n\n### detail\n\n## for `/rank` users');
+    const toc = html.slice(html.indexOf('<nav class="docs-toc"'), html.indexOf('</nav>', html.indexOf('<nav class="docs-toc"')));
+    assert.deepEqual([...toc.matchAll(/<li><a href="([^"]+)">(.*?)<\/a>/g)].map((m) => [m[1], m[2]]), [
+      ['#voice-xp', 'voice xp'],
+      ['#for-rank-users', 'for <code>/rank</code> users']
+    ]);
+    assert.ok(!renderOne('intro.\n\n## only one').includes('docs-toc'));
   });
 
   it('renders command entries with a code, plain-text or linked title', () => {
@@ -85,6 +128,13 @@ describe('page shape', () => {
     assert.ok(section.includes('<div class="docs-cmd">level-up message (dashboard only)<div class="docs-cmd-desc">what\'s posted.</div></div>'));
     assert.ok(section.includes('<div class="docs-cmd"><a href="/docs/profile"><code>/me</code>, <code>/afk</code></a><div class="docs-cmd-desc">your profile.</div></div>'));
     assert.ok(section.includes('<div class="docs-cmd"><code>/leaderboard</code> (or <code>/lb</code>)<div class="docs-cmd-desc">the top members.</div></div>'));
+  });
+
+  it('puts a purple + in front of every "taz plus"', () => {
+    const plus = '<span class="docs-plus" aria-hidden="true">+</span>';
+    const html = renderOne('free servers get 3, taz plus is unlimited.\n\n::: commands\n- taz plus - unlimited watched channels.\n:::');
+    assert.ok(html.includes(`<p class="docs-intro">free servers get 3, ${plus}taz plus is unlimited.</p>`));
+    assert.ok(commandsSection(html).includes(`<div class="docs-cmd">${plus}taz plus<div class="docs-cmd-desc">unlimited watched channels.</div></div>`));
   });
 
   it('renders a note with the info icon unless another kind is named', () => {

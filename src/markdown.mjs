@@ -1,5 +1,6 @@
 import MarkdownIt from 'markdown-it';
 import container from 'markdown-it-container';
+import { slugify } from './slug.mjs';
 
 export const NOTE_ICONS = {
   info: 'fa-info-circle',
@@ -30,6 +31,7 @@ const BLOCK_NAMES = {
 };
 
 const HEADING_ID = /\s*\{#([^}]*)\}\s*$/;
+const TAZ_PLUS = /\btaz plus\b/g;
 const VALID_ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 export function isAllowedHref(href) {
@@ -42,7 +44,9 @@ export function createMarkdown() {
   md.use(container, 'block', { validate: () => true });
   md.core.ruler.push('taz_docs', (state) => {
     checkInline(state);
+    markPlus(state);
     state.tokens = restructure(state);
+    addHeadingIds(state);
   });
 
   md.renderer.rules.docs_cmd_list_open = () => '<div class="docs-cmd-list">\n';
@@ -51,10 +55,10 @@ export function createMarkdown() {
     const { title, desc } = tokens[idx].meta;
     return `<div class="docs-cmd">${self.renderInline(title, options, env)}<div class="docs-cmd-desc">${self.renderInline(desc, options, env)}</div></div>\n`;
   };
+  md.renderer.rules.docs_plus = () => '<span class="docs-plus" aria-hidden="true">+</span>';
   md.renderer.rules.docs_note = (tokens, idx, options, env, self) => {
     const { icon, children } = tokens[idx].meta;
-    const style = env.noteStyle ? ` style="${env.noteStyle}"` : '';
-    return `<div class="docs-note"${style}>\n<i class="fas ${icon}" aria-hidden="true"></i>\n<span>${self.renderInline(children, options, env)}</span>\n</div>\n`;
+    return `<div class="docs-note">\n<i class="fas ${icon}" aria-hidden="true"></i>\n<span>${self.renderInline(children, options, env)}</span>\n</div>\n`;
   };
   return md;
 }
@@ -75,6 +79,25 @@ function checkInline(state) {
         report(state, block, `link "${token.attrGet('href')}" isn't allowed - use https://..., a site path like /docs/leveling, or #an-anchor`);
       }
     }
+  }
+}
+
+// Every "taz plus" gets the site's purple + in front of it.
+function markPlus(state) {
+  for (const block of state.tokens) {
+    if (block.type !== 'inline') continue;
+    block.children = block.children.flatMap((token) => {
+      if (token.type !== 'text' || !token.content.includes('taz plus')) return [token];
+      const out = [];
+      let from = 0;
+      for (const match of token.content.matchAll(TAZ_PLUS)) {
+        if (match.index > from) out.push(textLike(token, token.content.slice(from, match.index)));
+        out.push(new state.Token('docs_plus', '', 0));
+        from = match.index;
+      }
+      out.push(textLike(token, token.content.slice(from)));
+      return out;
+    });
   }
 }
 
@@ -131,6 +154,24 @@ function checkHeading(state, open, inline) {
   open.attrSet('id', id);
   last.content = last.content.slice(0, match.index);
   if (!last.content) inline.children.pop();
+}
+
+function headingText(inline) {
+  return inline.children.filter((t) => t.type === 'text' || t.type === 'code_inline').map((t) => t.content).join('');
+}
+
+// Every heading gets an id for the page's "on this page" list. Only {#id}s are
+// promised to last (env.ids), so links between pages may only use those.
+function addHeadingIds(state) {
+  const used = new Set(state.env.ids);
+  state.tokens.forEach((token, i) => {
+    if (token.type !== 'heading_open' || token.attrGet('id')) return;
+    const base = slugify(headingText(state.tokens[i + 1]));
+    let id = base;
+    for (let n = 2; used.has(id); n += 1) id = `${base}-${n}`;
+    used.add(id);
+    token.attrSet('id', id);
+  });
 }
 
 function containerTokens(state, open, inner) {

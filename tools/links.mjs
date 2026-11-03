@@ -1,19 +1,19 @@
 export const SITE_PATHS = ['/', '/commands', '/dashboard', '/invite', '/plus', '/roadmap', '/status'];
 
-function bodyLinks(html) {
-  const body = html.slice(html.indexOf('<body>'));
-  return [...body.matchAll(/<a\b[^>]*\bhref="([^"]*)"/g)].map((m) => m[1].replace(/&amp;/g, '&'));
-}
-
-function ids(html) {
-  return new Set([...html.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]));
+// The links the page's markdown wrote: its intro and text, not the sidebar,
+// "on this page" list or previous/next links around them.
+function contentLinks(html) {
+  const start = html.indexOf('<p class="docs-intro">');
+  const end = html.search(/<nav class="docs-pager"|<\/main>/);
+  const content = html.slice(start, end).replace(/<nav class="docs-toc"[\s\S]*?<\/nav>/, '');
+  return [...content.matchAll(/<a\b[^>]*\bhref="([^"]*)"/g)].map((m) => m[1].replace(/&amp;/g, '&'));
 }
 
 export function findBrokenLinks(pages) {
-  const byUrl = new Map(pages.map((page) => [page.url, { page, ids: ids(page.html) }]));
+  const byUrl = new Map(pages.map((page) => [page.url, { page, ids: page.anchors }]));
   const broken = [];
   for (const page of pages) {
-    for (const href of bodyLinks(page.html)) {
+    for (const href of contentLinks(page.html)) {
       if (/^https?:\/\//i.test(href)) continue;
       const [pathPart, anchor] = href.split('#');
       const targetUrl = pathPart || page.url;

@@ -21,8 +21,9 @@ export function urlFor(slug) {
   return slug === 'index' ? '/docs' : `/docs/${slug}`;
 }
 
-// Renders every page in contentDir. Returns [{ slug, url, html }], the index
-// first and the rest in `order`; throws a DocsError listing every problem found.
+// Renders every page in contentDir. Returns [{ slug, url, html, anchors }], the
+// index first and the rest in `order`, where anchors are the page's {#id}s;
+// throws a DocsError listing every problem found.
 export function renderDocs({ contentDir }) {
   const md = createMarkdown();
   const problems = [];
@@ -40,10 +41,14 @@ export function renderDocs({ contentDir }) {
   if (problems.length) throw new DocsError(problems);
 
   const cards = rest.map((page) => ({ href: page.url, icon: page.data.icon, title: page.data.title, desc: page.data.card }));
+  const home = { href: index.url, title: index.data.heading };
   const rendered = [index, ...rest].map((page) => {
     const fields = { ...page.data, url: SITE_ORIGIN + page.url, intro: page.intro, body: page.body };
-    const html = page.slug === 'index' ? indexPage({ ...fields, cards }) : contentPage(fields);
-    return { slug: page.slug, url: page.url, html };
+    const at = rest.indexOf(page);
+    const html = page.slug === 'index'
+      ? indexPage({ ...fields, cards })
+      : contentPage({ ...fields, path: page.url, slug: page.slug, toc: page.toc, home, pages: cards, prev: cards[at - 1] ?? null, next: cards[at + 1] ?? null });
+    return { slug: page.slug, url: page.url, html, anchors: page.anchors };
   });
   return rendered;
 }
@@ -72,7 +77,7 @@ function loadPages(contentDir, md, problems) {
     }
     if (data.icon && !/^fa-[a-z0-9]+(-[a-z0-9]+)*$/.test(data.icon)) fail(2, `icon has to be a Font Awesome 5 class like fa-star, not "${data.icon}"`);
 
-    const env = { errors: [], ids: new Set(), noteStyle: slug === 'index' ? 'margin-bottom: 2rem;' : null };
+    const env = { errors: [], ids: new Set() };
     const tokens = md.parse(body, env);
     const toFileLine = (line) => (line ? line + bodyLine - 1 : null);
     env.errors.forEach((e) => fail(toFileLine(e.line), e.message));
@@ -81,11 +86,14 @@ function loadPages(contentDir, md, problems) {
     if (tokens[0]?.type === 'paragraph_open') {
       intro = md.renderer.renderInline(tokens[1].children, md.options, env);
       tokens.splice(0, 3);
-    } else {
+    } else if (slug !== 'index') {
       fail(bodyLine, 'the text after the frontmatter has to start with a paragraph - it becomes the intro under the page title');
     }
 
-    return { file, slug, url: urlFor(slug), data, intro, body: md.renderer.render(tokens, md.options, env) };
+    const toc = tokens.flatMap((token, i) => (token.type === 'heading_open' && token.tag === 'h2'
+      ? [{ id: token.attrGet('id'), html: md.renderer.renderInline(tokens[i + 1].children, md.options, env) }]
+      : []));
+    return { file, slug, url: urlFor(slug), data, intro, toc, anchors: env.ids, body: md.renderer.render(tokens, md.options, env) };
   });
 }
 
