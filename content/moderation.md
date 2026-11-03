@@ -39,7 +39,7 @@ these are standalone commands - use them directly, no menu required.
 ::: commands
 - `/purge amount: user: contains: has_attachment:` - bulk-deletes recent messages, optionally filtered by author, text, or attachments.
 - `/clean amount:` - deletes taz's own recent messages in a channel, without touching anyone else's.
-- `/snipe public:` - shows you the last message deleted in the current channel, and who sent it, for up to 10 minutes after it's gone. only you see it unless you set `public` to true. messages removed by `/purge` or by taz's own filters, and bot messages, aren't kept. needs Manage Messages or a `/snipe` [fake permission](#fake-permissions) grant. it's on by default; turn it off with `/mod toggle feature:snipe` or on the dashboard's moderation page.
+- `/snipe private:` - posts the last message deleted in the current channel, and who sent it, for up to 10 minutes after it's gone. set `private` to true to see it yourself without posting it. messages removed by `/purge` or by taz's own filters, and bot messages, aren't kept. needs Manage Messages or a `/snipe` [fake permission](#fake-permissions) grant. it's on by default; turn it off with `/mod toggle feature:snipe` or on the dashboard's moderation page.
 :::
 
 ### channel control
