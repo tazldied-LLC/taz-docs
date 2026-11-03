@@ -47,7 +47,7 @@ export function renderDocs({ contentDir }) {
     const at = rest.indexOf(page);
     const html = page.slug === 'index'
       ? indexPage({ ...fields, cards })
-      : contentPage({ ...fields, path: page.url, toc: page.toc, home, pages: cards, prev: cards[at - 1] ?? null, next: cards[at + 1] ?? null });
+      : contentPage({ ...fields, path: page.url, slug: page.slug, toc: page.toc, home, pages: cards, prev: cards[at - 1] ?? null, next: cards[at + 1] ?? null });
     return { slug: page.slug, url: page.url, html, anchors: page.anchors };
   });
   return rendered;

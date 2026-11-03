@@ -68,6 +68,12 @@ describe('the real docs', () => {
     assert.ok(first.includes('<a class="docs-prev" href="/docs" rel="prev"><span>back to</span>taz docs</a>'));
     assert.ok(!pages[pages.length - 1].html.includes('class="docs-next"'));
   });
+
+  it('link every article, but not the landing page, to its file on github for editing', () => {
+    const fun = pages.find((p) => p.slug === 'fun').html;
+    assert.ok(fun.includes('<a href="https://github.com/tazldied-LLC/taz-docs/edit/staging/content/fun.md">edit this page on github</a>'));
+    assert.ok(!pages[0].html.includes('class="docs-edit"'));
+  });
 });
 
 describe('page shape', () => {

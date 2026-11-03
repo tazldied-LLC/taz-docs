@@ -1,5 +1,7 @@
 export const SITE_ORIGIN = 'https://taz.bot';
 const IMAGE = 'https://cdn.tazldied.com/images/taz/taz-sitting.png';
+// Contributions go to staging: CONTRIBUTING.md asks for pull requests there, not main.
+const EDIT_BASE = 'https://github.com/tazldied-LLC/taz-docs/edit/staging/content/';
 
 export function escapeHtml(text) {
   return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -118,6 +120,11 @@ ${items}      </ol>
 `;
 }
 
+function editLink(slug) {
+  return `    <p class="docs-edit"><i class="fab fa-github" aria-hidden="true"></i><a href="${EDIT_BASE}${slug}.md">edit this page on github</a></p>
+`;
+}
+
 function pager(prev, next, home) {
   const link = (page, rel, label) => (page
     ? `      <a class="docs-${rel}" href="${page.href}" rel="${rel}"><span>${label}</span>${escapeHtml(page.title)}</a>\n`
@@ -127,7 +134,7 @@ ${link(prev || home, 'prev', prev ? 'previous' : 'back to')}${link(next, 'next',
 `;
 }
 
-export function contentPage({ title, description, url, path, intro, body, toc, home, pages, prev, next }) {
+export function contentPage({ title, description, url, path, slug, intro, body, toc, home, pages, prev, next }) {
   return `${head({ title: `${title} docs - taz`, description, url })}
 <div class="docs wrap">
   <aside class="docs-side">
@@ -147,7 +154,7 @@ ${pageList(pages, path)}      </ol>
     </header>
 ${onThisPage(toc)}    <div class="docs-prose">
 ${body}    </div>
-${pager(prev, next, home)}  </main>
+${editLink(slug)}${pager(prev, next, home)}  </main>
 </div>
 ${TAIL}`;
 }
