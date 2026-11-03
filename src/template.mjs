@@ -94,6 +94,7 @@ const TAIL = `
 <script src="/js/theme-toggle.js"></script>
 <script src="/js/fit.js"></script>
 <script src="/js/docsSearch.js"></script>
+<script src="/js/pen.js"></script>
 <script src="/js/pages/docs.js"></script>
 
 </body>
