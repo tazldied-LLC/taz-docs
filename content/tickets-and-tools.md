@@ -30,22 +30,25 @@ the dashboard's tickets page covers the same ground with a proper builder UI, if
 
 members DM taz, and she opens a private channel for your staff to answer in - so nobody on your team has to DM a member from their own account, and every conversation is kept. it's a natural place for appeals too: "if you think this was a mistake, DM taz."
 
-when someone DMs taz, she asks which server it's for (only servers they're in that have modmail on), then opens a channel in your modmail category that only your support roles and admins can see. the member never sees the channel: everything they send in DMs is copied into it, and staff answer from it.
+when someone DMs taz, she asks which server it's for (only servers they're in that have modmail on), then opens a channel in your modmail category that only your support roles and admins can see. the member never sees the channel: everything they send in DMs shows up in it under their own name and avatar, and staff answer by typing in it. each reply reaches the member as a plain DM from taz, starting with the staff member's name.
+
+start a message with `!` to keep it between staff - it isn't sent, and it's left out of the transcript.
 
 ::: commands
-- `/modmail reply message: attachment: anonymous:` - answer the member, from inside their modmail channel. anything typed in the channel without this stays between staff, so you can talk it over first. `anonymous` hides your name for that reply.
-- `/modmail close reason:` - ends the conversation, tells the member (with your reason, if you give one) and saves a transcript. the channel moves to your ticket archive category if you have one.
+- `/modmail reply message: attachment: anonymous:` - answer the member with a command instead of typing. `anonymous` hides your name for that one reply.
+- `/modmail close reason:` - ends the conversation, tells the member (with your reason, if you give one) and saves a transcript. the channel moves to your modmail archive category, or the ticket archive category if you haven't picked one.
 - `/modmail open user: message:` - start a conversation with a member yourself.
-- `/modmail settings enabled: category: anonymous_replies: greeting: clear_greeting:` - turn it on and set it up. with no options it shows the current setup. needs Manage Server or a tickets 'edit' dashboard grant.
+- `/modmail settings enabled: category: archive_category: add_support_role: remove_support_role: anonymous_replies: greeting: clear_greeting:` - turn it on and set it up. with no options it shows the current setup. needs Manage Server or a tickets 'edit' dashboard grant.
 :::
 
-- **who answers:** your [support roles](#tickets) (`/mod settings addsupportrole`), plus anyone with Manage Server or a tickets 'edit' grant. support roles get pinged when a conversation opens.
+- **who answers:** modmail's own support roles (`add_support_role`, or the dashboard's tickets page), or your [ticket support roles](#tickets) if you haven't picked any, plus anyone with Manage Server or a tickets 'edit' grant. support roles get pinged when a conversation opens.
+- **showing members as themselves:** taz needs the Manage Webhooks permission for this. without it, member messages show up as embeds instead.
 - **where:** your modmail category, or the ticket category if you don't pick one.
 - **one at a time:** a member has at most one open conversation per server. messaging taz again adds to it. if they have conversations open with more than one server, taz asks which one each message is for.
 - **DM settings:** `/modmail open` won't reach someone who turned off DMs from taz with `/me dms`. replies in a conversation they started still go through, since they asked.
 - **blocking someone:** a [ticket ban](#tickets) (`/ticket ban add`) stops them opening modmail too.
 - **transcripts:** closed conversations are saved like ticket transcripts, so the member can find theirs with `/transcripts mine` and staff with `/transcripts user`.
-- **anonymous replies:** off by default, so members know who they're talking to. turn them on with `anonymous_replies` to make every reply show as "staff" instead. the channel always shows which staff member sent what.
+- **anonymous replies:** off by default, so members know who they're talking to. turn them on with `anonymous_replies` to make every reply show as "staff" instead of your name. the channel always shows which staff member sent what.
 - **logging:** opening and closing a conversation is written to your mod log (the **Modmail** logging toggle).
 - **slowing down:** taz passes on up to 5 DMs every 10 seconds per person; anything faster gets a ⏳ and isn't sent.
 
