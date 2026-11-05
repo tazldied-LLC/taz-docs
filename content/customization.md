@@ -72,11 +72,22 @@ a phrase matches as a whole word, so "hi" doesn't fire on "this". the reply take
 
 ## custom commands {#custom-commands}
 
+your own commands. a custom command can reply, change someone's roles, DM someone, open one of your [application forms](/docs/tickets-and-tools#applications), or several of those at once. build them on the dashboard's general page, which has templates to start from: just a reply, role toggle, verify, open a form, shoutout, rules, and links.
+
 ::: commands
-- `/general custom add | edit | remove | list` - your own trigger → response pairs, with the same templated placeholders as welcome/leave.
+- `/general custom add trigger: response: slash: description: private: cooldown:` - make a simple one from Discord. everything else (options, actions, buttons, limits) is on the dashboard.
+- `/general custom edit | remove | list` - change, delete, or list them. `list` shows what each one does.
 :::
 
-always usable with your server's prefix (`{prefix}trigger`); optionally also registered as a real `/trigger` slash command. free servers get 25 slash-registered custom commands, taz plus gets 75 - prefix-triggered ones are effectively unlimited.
+every custom command works with your server's prefix (`{prefix}trigger`). turn on **slash** to also register it as a real `/trigger` command. a server can have up to 100 custom commands. free servers can make 25 of them slash commands, taz plus 75.
+
+- **reply:** text or an embed, with the `{user}`, `{username}`, `{server}` and `{memberCount}` placeholders. add up to 9 more replies and taz picks one at random each time. the reply can be empty when the command does something else.
+- **options:** up to 5 things members fill in - a member, some text, or a number. each one becomes a placeholder named after it, so an option called `member` fills `{member}` (and `{member.name}` with their username). a member option only pings if the reply mentions it. with the prefix, options go in order after the trigger, and the last text option takes the rest of the message.
+- **actions:** give, take away or toggle a role, for whoever ran it or for a member option; send a DM; or open an application form. taz won't hand out a role with staff permissions (Administrator, Manage Server, Manage Roles, Manage Channels, Manage Webhooks, Ban or Kick Members), or one above her own. DMs say which server they came from, and `/me dms` blocks them like any other.
+- **opening a form** only works on slash commands, because the link is private. it's the same one-time link as `/apply`.
+- **link buttons:** up to 5 under the reply.
+- **who and where:** limit a command to some roles or channels (picking a category covers its channels), and add a cooldown per member. people with Manage Server skip the role list and the cooldown. cooldowns reset if taz restarts.
+- **private replies** (slash only): only the person who ran it sees the reply.
 
 ## voice hubs {#voice-hubs}
 
