@@ -3,7 +3,7 @@ title: tickets & tools
 description: a one-click ticket panel routes support requests, reaction roles let members opt in with an emoji, giveaways can be gated to certain roles or levels, and invite tracking shows who invited who.
 order: 4
 icon: fa-ticket-alt
-card: support ticket panels, modmail, reaction roles, giveaways, and invite tracking.
+card: support ticket panels, modmail, applications, reaction roles, giveaways, and invite tracking.
 ---
 
 a one-click ticket panel routes support requests, reaction roles let members opt in with an emoji, giveaways can be gated to certain roles, levels, or prestige tiers, and invite tracking shows who invited who.
@@ -54,6 +54,27 @@ start a message with `!` to keep it between staff - it isn't sent, and it's left
 
 modmail is off until you turn it on, from `/modmail settings` or the dashboard's tickets page.
 
+## applications {#applications}
+
+take applications for staff, event hosts, or anything else with a form members fill in on taz.bot. you build the form on the dashboard's applications page; members start it with `/apply` in your server.
+
+::: commands
+- `/apply form:` - get your link to an open form. `form` is only needed when more than one is open.
+:::
+
+`/apply` answers with a private link that works once and expires after 2 hours. it's tied to the member who ran it, so a link someone shares can't be used to apply as them. the form shows who they're applying as, and once they send it, it's posted in your responses channel with **accept** and **deny** buttons.
+
+- **questions:** short answer, paragraph, one choice, several choices, or a number (with an optional range). each one can be required or optional. up to 25 per form.
+- **how many forms:** 3 per server, unlimited with [taz Plus](/plus). a form that's switched off isn't offered by `/apply`.
+- **responses channel:** every form needs one before anyone can apply. the dashboard can make a staff-only `#applications` channel for you.
+- **who reviews:** anyone with Manage Server, the form's reviewer roles, or a taz staff grant for "review applications". staff can also accept and deny from the dashboard's responses tab, where the full answers are kept.
+- **accepting:** gives the form's accept roles, if it has any. taz's own role has to be above them.
+- **telling the applicant:** taz DMs them the result. turn on "tell denied applicants why" and deny asks for a reason to send them. without it, a reason you write on the dashboard is only seen by staff.
+- **who can apply:** a minimum Discord account age, a minimum time in your server, no warns (active ones, or any on record), no past bans, and a wait between tries. someone with an application still waiting can't send another to the same form.
+- **how long answers are kept:** 90 days after accept or deny, or 90 days after they were sent if nobody decides. deleting a form deletes its responses too.
+
+the applications page needs the same dashboard access as tickets: view to read responses, edit to build forms and decide.
+
 ## reaction roles {#reaction-roles}
 
 ::: commands
@@ -85,5 +106,5 @@ off by default - a staff member turns it on with `/invites enable` (dashboard: g
 :::
 
 ::: note
-free servers get 5 active ticket panels and 10 active giveaways at once - taz plus removes the ceiling entirely. neither limit applies retroactively to what you've already created.
+free servers get 5 active ticket panels, 10 active giveaways at once and 3 application forms - taz plus removes the ceiling entirely. none of these limits apply retroactively to what you've already created.
 :::
