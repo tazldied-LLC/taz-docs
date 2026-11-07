@@ -26,7 +26,7 @@ a blocked nickname gets *replaced*, not cleared - clearing falls back to the mem
 ## spam & link filters
 
 ::: commands
-- `/automod spamfilter massmention state: threshold: bots:` - catches messages pinging too many people at once. each user and each role counts as one mention (roles on the pingable list don't count, and neither does pinging taz), and @everyone/@here always trips it. `bots:ignore bots` stops other bots and their roles counting too (on the dashboard, "don't count bots").
+- `/automod spamfilter massmention state: threshold: bots:` - catches messages pinging too many people at once. each user and each role counts as one mention, roles on the pingable list don't count, and @everyone/@here always trips it. pinging a bot (taz included) or a bot's own role doesn't count either; `bots:count bots` makes other bots count again (on the dashboard, turn off "don't count bots").
 - `/automod spamfilter linkflood` - catches a burst of links posted too quickly.
 - `/automod spamfilter repeat` - catches the same message spammed repeatedly.
 - `/automod linkfilter toggle|adddomain|removedomain|addroledomain|removeroledomain` - blocks links outright, with an allowlist for approved domains - and per-role domain allowances on top of the global list.
