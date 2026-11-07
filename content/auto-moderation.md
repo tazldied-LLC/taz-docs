@@ -26,7 +26,7 @@ a blocked nickname gets *replaced*, not cleared - clearing falls back to the mem
 ## spam & link filters
 
 ::: commands
-- `/automod spamfilter massmention` - catches messages pinging too many users at once.
+- `/automod spamfilter massmention` - catches messages pinging too many people at once. each user and each role counts as one mention (roles on the pingable list don't count, and neither does pinging taz), and @everyone/@here always trips it.
 - `/automod spamfilter linkflood` - catches a burst of links posted too quickly.
 - `/automod spamfilter repeat` - catches the same message spammed repeatedly.
 - `/automod linkfilter toggle|adddomain|removedomain|addroledomain|removeroledomain` - blocks links outright, with an allowlist for approved domains - and per-role domain allowances on top of the global list.
