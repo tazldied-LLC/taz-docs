@@ -3,7 +3,7 @@ title: tickets & tools
 description: a one-click ticket panel routes support requests, reaction roles let members opt in with an emoji, giveaways can be gated to certain roles or levels, and invite tracking shows who invited who.
 order: 4
 icon: fa-ticket-alt
-card: support ticket panels, modmail, reaction roles, giveaways, and invite tracking.
+card: support ticket panels, modmail, forms and ban appeals, reaction roles, giveaways, and invite tracking.
 ---
 
 a one-click ticket panel routes support requests, reaction roles let members opt in with an emoji, giveaways can be gated to certain roles, levels, or prestige tiers, and invite tracking shows who invited who.
@@ -54,6 +54,55 @@ start a message with `!` to keep it between staff - it isn't sent, and it's left
 
 modmail is off until you turn it on, from `/modmail settings` or the dashboard's tickets page.
 
+## forms {#forms}
+
+forms members fill in on taz.bot: staff applications, ban appeals, event sign-ups, feedback, reports, or anything else. you build them on the dashboard's forms page, starting from a template if you like, and members open one with `/form` in your server.
+
+::: commands
+- `/form form:` - get your link to an open form. `form` is only needed when more than one is open.
+:::
+
+you can also post a button for a form from the dashboard (**post button** on the form), so members don't need to know the command. pressing it does the same as `/form`.
+
+`/form` answers with a private link that works once and expires after 2 hours. it's tied to the member who ran it, so a link someone shares can't be used to answer as them. once they send it, it's posted in your responses channel.
+
+- **questions:** short answer, paragraph, one choice, several choices, a number (with an optional range), or a role picker (members pick from roles you list, one or several). each one can be required or optional. up to 50 per form, unlimited with [taz Plus](/plus). a question can show only for some answers to a one choice or several choices question above it, like asking for a minecraft username only if they picked minecraft. a question that isn't showing doesn't need an answer.
+- **how many forms:** 3 per server, unlimited with [taz Plus](/plus). a form that's switched off isn't offered by `/form`.
+- **closing on its own:** a form can stop after a number of responses, or at a date and time. every response counts toward the limit, even ones deleted after 90 days.
+- **responses channel:** every form needs one before anyone can fill it in. the dashboard can make a staff-only `#form-responses` channel for you. each response gets one line there ("new response to staff application from @someone") with buttons, so a busy form doesn't fill the channel. **view answers** shows the full answers only to whoever pressed it, along with how that person's earlier responses to the form went. responses with more than 25 answers don't get it: read those on the dashboard. **open in dashboard** goes straight to the form's responses.
+- **review:** turn it on and each response also gets **accept** and **deny** buttons. leave it off to just collect responses.
+- **who reviews:** anyone with Manage Server, the form's reviewer roles, or a taz staff grant for "review form responses". staff can also accept and deny from the dashboard's responses tab, where the full answers are kept.
+- **reasons:** turn on "ask for a deny reason and send it" and deny asks for a reason, which is added to the deny DM (or put `{reason}` where you want it). "ask for an accept reason and send it" does the same for accepting. without them, a reason you write on the dashboard is only seen by staff.
+- **leaving the server:** turn on "deny if they leave the server" and a response still waiting is denied by taz when its sender leaves, is kicked or is banned, with "left the server" as the reason.
+- **who can fill it in:** a minimum Discord account age, a minimum time in your server, no warns (active ones, or any on record), no past bans, one response per person, and a wait between tries. someone with a response still waiting can't send another to the same form.
+- **how long responses are kept:** 90 days after accept or deny, or 90 days after they were sent if nobody decides (or the form has no review). deleting a form deletes its responses too.
+- **downloading responses:** pick a form on the dashboard's responses tab and **download csv** for a spreadsheet of every response taz still has.
+- **stats:** each form on the dashboard shows its responses from the last 90 days, how many were accepted, and how long reviews take on average.
+
+### what happens {#form-actions}
+
+each form can do up to 5 things at each step: when someone sends it, and when staff accept or deny it.
+
+- **give or take a role**, or the role they picked in a role picker question. taz won't hand out a role with staff permissions (Administrator, Manage Server, Manage Roles, Manage Channels, Manage Webhooks, Ban or Kick Members), or one above her own.
+- **DM them.** new forms DM the result of a review by default. DMs say which form and server they came from, and `/me dms` blocks them like any other.
+- **post in a channel.** mentions you type in the message ping; anything from their answers doesn't.
+- **open a private thread with them** in a channel you pick, with whoever accepted or denied it. pick a channel they can see. taz needs Create Private Threads there.
+- **unban them from a linked server** (accept only). see [ban appeals](#ban-appeals).
+
+messages can use `{user}`, `{username}`, `{server}`, `{form}`, `{reason}` (on accept or deny), and each question's own placeholder, like `{q1}`, which the dashboard shows next to the question.
+
+### ban appeals {#ban-appeals}
+
+if people appeal bans in a separate server, link the two and accepting an appeal there unbans them from your main server.
+
+1. the main server's owner makes a link code under **ban appeals** on the forms page. it works once and lasts 15 minutes.
+2. the appeal server's owner enters it on the same page there. only owners can link or unlink, and either one can unlink at any time.
+3. make a form in the appeal server (the **ban appeal** template is a good start) with **unban them from a linked server** under "when staff accept it". tick the box and taz also DMs them a one-use invite back, good for 7 days.
+
+an appeal form only opens for people who are actually banned in the linked server, and **view answers** on each response shows the ban's reason (and when it happened, if taz has a case for it). anyone who can review that form in the appeal server can unban people from the main one, so pick reviewers you trust. the unban is logged in the main server's mod log as a "ban appeal" case with who accepted it and where. taz needs Ban Members in the main server.
+
+the forms page needs the same dashboard access as tickets: view to read responses, edit to build forms and decide.
+
 ## reaction roles {#reaction-roles}
 
 ::: commands
@@ -85,5 +134,5 @@ off by default - a staff member turns it on with `/invites enable` (dashboard: g
 :::
 
 ::: note
-free servers get 5 active ticket panels and 10 active giveaways at once - taz plus removes the ceiling entirely. neither limit applies retroactively to what you've already created.
+free servers get 5 active ticket panels, 10 active giveaways at once, and 3 forms of up to 50 questions - taz plus removes the ceiling entirely. none of these limits apply retroactively to what you've already created.
 :::
