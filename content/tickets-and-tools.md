@@ -62,16 +62,20 @@ forms members fill in on taz.bot: staff applications, ban appeals, event sign-up
 - `/form form:` - get your link to an open form. `form` is only needed when more than one is open.
 :::
 
+you can also post a button for a form from the dashboard (**post button** on the form), so members don't need to know the command. pressing it does the same as `/form`.
+
 `/form` answers with a private link that works once and expires after 2 hours. it's tied to the member who ran it, so a link someone shares can't be used to answer as them. once they send it, it's posted in your responses channel.
 
-- **questions:** short answer, paragraph, one choice, several choices, or a number (with an optional range). each one can be required or optional. up to 25 per form.
+- **questions:** short answer, paragraph, one choice, several choices, or a number (with an optional range). each one can be required or optional. up to 25 per form. a question can show only for some answers to a one choice or several choices question above it, like asking for a minecraft username only if they picked minecraft. a question that isn't showing doesn't need an answer.
 - **how many forms:** 3 per server, unlimited with [taz Plus](/plus). a form that's switched off isn't offered by `/form`.
+- **closing on its own:** a form can stop after a number of responses, or at a date and time. every response counts toward the limit, even ones deleted after 90 days.
 - **responses channel:** every form needs one before anyone can fill it in. the dashboard can make a staff-only `#form-responses` channel for you.
 - **review:** turn it on and each response gets **accept** and **deny** buttons. leave it off to just collect responses.
 - **who reviews:** anyone with Manage Server, the form's reviewer roles, or a taz staff grant for "review form responses". staff can also accept and deny from the dashboard's responses tab, where the full answers are kept.
 - **deny reasons:** turn on "ask for a deny reason and send it" and deny asks for a reason, which is added to the deny DM (or put `{reason}` where you want it). without it, a reason you write on the dashboard is only seen by staff.
 - **who can fill it in:** a minimum Discord account age, a minimum time in your server, no warns (active ones, or any on record), no past bans, one response per person, and a wait between tries. someone with a response still waiting can't send another to the same form.
 - **how long responses are kept:** 90 days after accept or deny, or 90 days after they were sent if nobody decides (or the form has no review). deleting a form deletes its responses too.
+- **downloading responses:** pick a form on the dashboard's responses tab and **download csv** for a spreadsheet of every response taz still has.
 
 ### what happens {#form-actions}
 
