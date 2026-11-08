@@ -66,7 +66,7 @@ you can also post a button for a form from the dashboard (**post button** on the
 
 `/form` answers with a private link that works once and expires after 2 hours. it's tied to the member who ran it, so a link someone shares can't be used to answer as them. once they send it, it's posted in your responses channel.
 
-- **questions:** short answer, paragraph, one choice, several choices, a number (with an optional range), or a role picker (members pick from roles you list, one or several). each one can be required or optional. up to 50 per form. a question can show only for some answers to a one choice or several choices question above it, like asking for a minecraft username only if they picked minecraft. a question that isn't showing doesn't need an answer.
+- **questions:** short answer, paragraph, one choice, several choices, a number (with an optional range), or a role picker (members pick from roles you list, one or several). each one can be required or optional. up to 50 per form, unlimited with [taz Plus](/plus). a question can show only for some answers to a one choice or several choices question above it, like asking for a minecraft username only if they picked minecraft. a question that isn't showing doesn't need an answer.
 - **how many forms:** 3 per server, unlimited with [taz Plus](/plus). a form that's switched off isn't offered by `/form`.
 - **closing on its own:** a form can stop after a number of responses, or at a date and time. every response counts toward the limit, even ones deleted after 90 days.
 - **responses channel:** every form needs one before anyone can fill it in. the dashboard can make a staff-only `#form-responses` channel for you. each response gets one line there ("new response to staff application from @someone") with buttons, so a busy form doesn't fill the channel. **view answers** shows the full answers only to whoever pressed it, along with how that person's earlier responses to the form went. **open in dashboard** goes straight to the form's responses.
@@ -134,5 +134,5 @@ off by default - a staff member turns it on with `/invites enable` (dashboard: g
 :::
 
 ::: note
-free servers get 5 active ticket panels, 10 active giveaways at once and 3 forms - taz plus removes the ceiling entirely. none of these limits apply retroactively to what you've already created.
+free servers get 5 active ticket panels, 10 active giveaways at once, and 3 forms of up to 50 questions - taz plus removes the ceiling entirely. none of these limits apply retroactively to what you've already created.
 :::
