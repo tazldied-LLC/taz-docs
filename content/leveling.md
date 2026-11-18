@@ -3,7 +3,7 @@ title: leveling
 description: every message earns xp, level roles unlock automatically, and boosters climb faster - rank cards are visual, not just a number.
 order: 3
 icon: fa-star
-card: xp, level roles, booster bonuses, channels that cost xp, voice xp, prestige, decay, and rank cards.
+card: xp, level roles, booster bonuses, channels that cost xp, voice xp, daily caps, prestige and voice roles, decay, and rank cards.
 ---
 
 every message earns xp, level roles unlock automatically, and boosters climb faster. members can prestige once they hit a threshold, and rank cards are visual - not just a number.
@@ -26,6 +26,7 @@ everything below lives under `/level settings`, the dashboard's leveling page, o
 - `curve` / `xppermessage` - how much xp a message earns (7-15 by default, up to 1,000 before boosts), and how the level curve scales.
 - `rolestackmode` - whether level roles stack or replace the previous tier.
 - `prestige` - the level required to prestige. unset means prestige is disabled - there's no sane default.
+- `dailycap from: xp:` - the most xp a member can earn in a day, with separate caps for messages and voice. see [daily xp cap](#daily-cap).
 - `decay` - opt-in weekly xp decay for inactive members. off by default.
 - `rankcardpattern` - pick one of nine built-in gradient themes for `/rank` cards, free.
 - `rankcardimage` - upload a fully custom rank card background - taz plus.
@@ -110,6 +111,21 @@ the file names channels and roles by their discord ids, so when you load it into
 - `/level ignoreprefix add|remove|list` - register another bot's command prefix (e.g. `.` for Dyno, `g!` for a giveaway bot) so a member typing a command *at* that bot doesn't earn xp for it - taz can't otherwise tell that message apart from a real one.
 :::
 
+## prestige roles & voice roles {#milestone-roles}
+
+::: commands
+- `/level prestigerole set|remove|list` - a role for reaching a prestige tier, up to 25 of them. a member who prestiges gets the role straight away.
+- `/level vcrole set|remove|list` - a role for total hours in voice, up to 25 of them. the hours are the same ones [`/vcstats`](/docs/utilities#vc-stats) shows, so voice time only counts while analytics and vc stats are on.
+- `/level vcrole top` / `cleartop` - a role for whoever has the most time in voice of all time, which moves when someone passes them, like the top-ranker role does for levels.
+- `/level user vchours user: operation: hours:` - add, remove or set someone's hours in voice (decimals work, like `1.5`). it only changes their voice hours, never their xp, and their voice roles follow the new total. it lands in your mod log with the before and after (the **Levels** toggle). members who turned off data collection with `/me` can't be given hours.
+:::
+
+prestige and voice roles stack or replace each other the same way level roles do (`rolestackmode`): with "only keep the highest", reaching a higher one takes the lower one off. setting a new one hands it to everyone who already qualifies. a role above what someone has reached only comes off when staff lower their hours below it, so roles you hand out yourself are left alone. all of this is on the dashboard's leveling page too, under "prestige", "voice roles" and "change voice hours", and it's free.
+
+## daily xp cap {#daily-cap}
+
+cap how much xp a member can earn in one day, with `/level settings dailycap` or "daily XP cap" on the dashboard. messages and voice have separate caps, and `0` turns a cap off (the default). the cap counts xp after booster and channel multipliers, and once a member hits it they stop earning that kind of xp until the next day. the day starts at midnight in [your server's timezone](/docs/customization#timezone). losing xp is never capped.
+
 ## losing xp {#losing-xp}
 
 a channel with a negative multiplier takes xp away for each message, on the same cooldown as earning it (otherwise every message in there would cost something). boosters and the active-chat bonus only ever make gains bigger, never losses. what happens next is up to you, under `/level settings leveldown` or "losing xp" on the dashboard:
@@ -136,7 +152,7 @@ members can earn xp for time in voice too. it's off by default, since it changes
 bots never earn voice xp, and a bot doesn't count as company for the "alone" rule. these rules are separate from [vc stats](/docs/utilities#vc-stats), so a server can, say, track AFK time in its stats without paying xp for it.
 
 ::: note
-taz's own role has to sit above a level role in your server's role list to actually grant it - Discord enforces this regardless of Administrator. taz checks for this and warns you (in `/level levelrole set`, the level panel, and the dashboard) whenever a configured level role is one she can't grant; a level-up that crosses a blocked role also gets a note in the level-up message itself ("i would give you a role, but i can't :<"). the same check and warning applies to the top-ranker role.
+taz's own role has to sit above a level role in your server's role list to actually grant it - Discord enforces this regardless of Administrator. taz checks for this and warns you (in `/level levelrole set`, the level panel, and the dashboard) whenever a configured level role is one she can't grant; a level-up that crosses a blocked role also gets a note in the level-up message itself ("i would give you a role, but i can't :<"). the same check and warning applies to the top-ranker role, and `/level prestigerole set` and `/level vcrole set` warn the same way.
 :::
 
 ::: note
