@@ -13,7 +13,7 @@ two kinds of thing taz posts without being asked: an announcement you wrote once
 write it once, taz posts it on a schedule - a weekly event reminder, a daily rules nudge, a one-off you'd rather not stay up for. each one gets a name you refer to it by afterwards.
 
 ::: commands
-- `/announcements scheduled add name: message: datetime: channel: recurrence:` - `datetime` is the first fire time as `YYYY-MM-DD HH:MM`, in UTC. `channel` is where it posts, the channel you run it in if you leave it out. `recurrence` is once (the default), daily, weekly, or monthly.
+- `/announcements scheduled add name: message: datetime: channel: recurrence:` - `datetime` is the first fire time as `YYYY-MM-DD HH:MM`, in [your server's timezone](/docs/customization#timezone). `channel` is where it posts, the channel you run it in if you leave it out. `recurrence` is once (the default), daily, weekly, or monthly.
 - `/announcements scheduled edit name:` - change the channel, message, next fire time, recurrence, or enabled state of an existing one. a disabled announcement keeps its settings and just stops firing.
 - `/announcements scheduled remove name:` - delete one for good.
 - `/announcements scheduled list` - every scheduled announcement in this server, with its channel, next fire time, and recurrence.
@@ -22,7 +22,7 @@ write it once, taz posts it on a schedule - a weekly event reminder, a daily rul
 the message can be plain text or a full embed, and supports `{server}` and `{memberCount}`. the member placeholders `{user}` and `{username}` are accepted for consistency with every other message box, but nobody triggers a scheduled announcement - there's no member for them to point at, so they both come out as "someone". there's no cap on how many you can have, free and taz plus alike.
 
 ::: note clock
-times are UTC, deliberately - a server with staff in four countries shouldn't have its announcements silently shift because of whose timezone taz guessed. work out the UTC time once when you set it up and it stays put, daylight saving included.
+times are in your server's timezone (UTC until you set one with `/general settings timezone`), and repeats stay at the same local time across daylight saving changes. a time daylight saving skips, like 2:30 on the night clocks go forward, fires just after the gap; a time that happens twice fires the first time.
 :::
 
 ## youtube notifications {#youtube}

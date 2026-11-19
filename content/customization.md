@@ -119,6 +119,16 @@ these are open to every member, but only work on a channel you own (or, for `cla
 
 new channels copy their category's permissions, so whoever can't see or join that category can't see or join them either. taz needs Manage Channels, Manage Roles and Move Members to make channels, set them up and move people in - without those, joining a hub does nothing - and discord only lets her give an owner permissions she has herself. a server can have at most 50 of these channels open at once, a safety net well under discord's 500-channel limit. making and deleting them stays out of your mod log, so a busy evening doesn't bury everything else.
 
+## server timezone {#timezone}
+
+every time taz shows or schedules goes by your server's timezone: scheduled announcements, birthday announcements (a birthday starts at midnight there), the daily xp cap, the analytics heatmaps, ticket and modmail transcripts, and form close dates. it's UTC until you pick one.
+
+::: commands
+- `/general settings timezone timezone:` - an autocompleting list of real timezones (`America/New_York` and friends). daylight saving is handled for you. also on the dashboard's general page, under "timezone".
+:::
+
+discord's own timestamps (the ones that show "in 2 hours" or a date) already appear in each person's own time, so those don't change.
+
 ## other settings
 
 ::: commands

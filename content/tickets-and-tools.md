@@ -64,12 +64,12 @@ forms members fill in on taz.bot: staff applications, ban appeals, event sign-up
 
 you can also post a button for a form from the dashboard (**post button** on the form), so members don't need to know the command. pressing it does the same as `/form`.
 
-`/form` answers with a private link that works once and expires after 2 hours. it's tied to the member who ran it, so a link someone shares can't be used to answer as them. once they send it, it's posted in your responses channel.
+`/form` answers with a private link that works once and expires after 2 hours. it's tied to the member who ran it, so a link someone shares can't be used to answer as them. once they send it, it shows up on the dashboard's responses tab, and taz posts a note about it in your staff channel if the form has one (see [what happens](#form-actions)).
 
 - **questions:** short answer, paragraph, one choice, several choices, a number (with an optional range), or a role picker (members pick from roles you list, one or several). each one can be required or optional. up to 50 per form, unlimited with [taz Plus](/plus). a question can show only for some answers to a one choice or several choices question above it, like asking for a minecraft username only if they picked minecraft. a question that isn't showing doesn't need an answer.
 - **how many forms:** 3 per server, unlimited with [taz Plus](/plus). a form that's switched off isn't offered by `/form`.
 - **closing on its own:** a form can stop after a number of responses, or at a date and time. every response counts toward the limit, even ones deleted after 90 days.
-- **responses channel:** every form needs one before anyone can fill it in. the dashboard can make a staff-only `#form-responses` channel for you. each response gets one line there ("new response to staff application from @someone") with buttons, so a busy form doesn't fill the channel. **view answers** shows the full answers only to whoever pressed it, along with how that person's earlier responses to the form went. responses with more than 25 answers don't get it: read those on the dashboard. **open in dashboard** goes straight to the form's responses.
+- **reading responses:** the dashboard's responses tab has a **summary** of a form (how many picked each option, the range of number answers, and the most common text answers) and an **individual** view that shows one response at a time, laid out like the form, with accept and deny on it.
 - **review:** turn it on and each response also gets **accept** and **deny** buttons. leave it off to just collect responses.
 - **who reviews:** anyone with Manage Server, the form's reviewer roles, or a taz staff grant for "review form responses". staff can also accept and deny from the dashboard's responses tab, where the full answers are kept.
 - **reasons:** turn on "ask for a deny reason and send it" and deny asks for a reason, which is added to the deny DM (or put `{reason}` where you want it). "ask for an accept reason and send it" does the same for accepting. without them, a reason you write on the dashboard is only seen by staff.
@@ -83,6 +83,7 @@ you can also post a button for a form from the dashboard (**post button** on the
 
 each form can do up to 5 things at each step: when someone sends it, and when staff accept or deny it.
 
+- **post a new response note** (when someone sends it). this is how staff hear about responses in Discord: one line in the channel you pick ("new response to staff application from @someone"), so a busy form doesn't fill the channel, and it can ping a role. the dashboard can make a staff-only `#form-responses` channel for you. **view answers** shows the full answers only to whoever pressed it, along with how that person's earlier responses to the form went. responses with more than 25 answers don't get it: read those on the dashboard. **open in dashboard** opens that response. new forms start with this note; remove it and responses only show up on the dashboard. it doesn't count toward the 5.
 - **give or take a role**, or the role they picked in a role picker question. taz won't hand out a role with staff permissions (Administrator, Manage Server, Manage Roles, Manage Channels, Manage Webhooks, Ban or Kick Members), or one above her own.
 - **DM them.** new forms DM the result of a review by default. DMs say which form and server they came from, and `/me dms` blocks them like any other.
 - **post in a channel.** mentions you type in the message ping; anything from their answers doesn't.

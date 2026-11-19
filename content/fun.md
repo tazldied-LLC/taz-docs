@@ -103,7 +103,7 @@ captions, filters, and a compatibility card, all built to work on animated (GIF/
 
 ## birthdays {#birthdays}
 
-members set their own birthday on [`/me`](/docs/profile) - a cross-server profile, so it only has to be entered once. a birth year is optional; without one, only the month/day is ever known. a server with a birthday channel configured announces it automatically on the day, for any member whose birthday is visible to that server.
+members set their own birthday on [`/me`](/docs/profile) - a cross-server profile, so it only has to be entered once. a birth year is optional; without one, only the month/day is ever known. a server with a birthday channel configured announces it automatically on the day (starting at midnight in [the server's timezone](/docs/customization#timezone)), for any member whose birthday is visible to that server.
 
 ::: commands
 - `/birthday channel:` / `clearchannel` - where (and whether) birthday announcements post. staff only.
