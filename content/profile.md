@@ -19,15 +19,18 @@ birthday, timezone, pronouns, DM opt-out, and cross-server leaderboard visibilit
 - `/me pronouns pronouns:` - free text - "she/her", "they/them", whatever you use. `none` clears it.
 - `/me leaderboards state:` - visible or hidden on cross-server (global) leaderboards - [counting's global leaderboard](/docs/fun#counting-leaderboards) today.
 - `/me dms state:` - allow or block DMs from taz - moderation notices and the like.
+- `/me download-data` - a file of everything taz keeps about you, in every server - see [your data](#your-data) below.
 - `/me delete-data include_levels:` - delete what taz keeps about you, in every server - see [your data](#your-data) below.
 - `/me data-collection state:` - turn data collection off (not recommended) or back on - see [your data](#your-data) below.
 :::
 
-one subcommand per thing, rather than a single `/me set` with eight options on it, so each one asks you for exactly what it needs and nothing else.
+one subcommand per thing, rather than a single `/me set` with nine options on it, so each one asks you for exactly what it needs and nothing else.
 
 birthday and age visibility both default to hidden - setting either doesn't announce anything until you turn the matching toggle on. a server with your birthday visible can still have your age hidden, or the reverse - they're independent. the dashboard has an equivalent "me" page for all of this too.
 
 ## your data {#your-data}
+
+`/me download-data` sends you a file (only you see it) of everything taz keeps about you, in every server: your profile, levels, counting scores, warns and moderation cases, afk statuses, reminders, suggestions and votes, giveaways you entered, closed tickets and modmail, forms you filled in, and activity stats. moderation records say what happened and why, but not which staff member did it, and other people's data (like who invited you) is left out. the dashboard's "me" page has the same download, which also works when the file is too big for Discord. you can get a new copy every 10 minutes.
 
 `/me delete-data` deletes the data taz keeps about you, in every server at once: your profile, afk statuses, reminders, suggestion votes, giveaway entries, activity stats and invite tracking. add `include_levels:true` to delete your levels and counting scores too - that part can't be undone, so it's off unless you ask. it shows you what it found and asks before deleting anything. a "block DMs" choice is kept.
 
