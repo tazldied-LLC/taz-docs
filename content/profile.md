@@ -30,7 +30,7 @@ birthday and age visibility both default to hidden - setting either doesn't anno
 
 ## your data {#your-data}
 
-`/me download-data` sends you a file (only you see it) of everything taz keeps about you, in every server: your profile, levels, counting scores, warns and moderation cases, afk statuses, reminders, suggestions and votes, giveaways you entered, closed tickets and modmail, forms you filled in, and activity stats. moderation records say what happened and why, but not which staff member did it, and other people's data (like who invited you) is left out. the dashboard's "me" page has the same download, which also works when the file is too big for Discord. you can get a new copy every 10 minutes.
+`/me download-data` sends you a file (only you see it) of everything taz keeps about you, in every server: your profile, levels, counting scores, afk statuses, reminders, suggestions and votes, giveaways you entered, closed tickets and modmail, forms you filled in, and activity stats. a server's moderation records about you (warns, cases, bans and the like) aren't in it, since they belong to that server's moderation - see below. other people's data, like who invited you, is left out too. the dashboard's "me" page has the same download, which also works when the file is too big for Discord. you can get a new copy every 10 minutes.
 
 `/me delete-data` deletes the data taz keeps about you, in every server at once: your profile, afk statuses, reminders, suggestion votes, giveaway entries, activity stats and invite tracking. add `include_levels:true` to delete your levels and counting scores too - that part can't be undone, so it's off unless you ask. it shows you what it found and asks before deleting anything. a "block DMs" choice is kept.
 
