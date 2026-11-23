@@ -144,6 +144,19 @@ discord's own timestamps (the ones that show "in 2 hours" or a date) already app
 almost everything here also has an equivalent on the [dashboard](/dashboard)'s general settings page, including a live preview for embed-based messages.
 :::
 
+## copying settings to another server {#copy-settings}
+
+the dashboard's general, moderation, tickets and fun pages each end with a "copy settings" section: download that page's settings as a file, and load one back here or into another server. loading shows which settings it would replace and changes nothing until you confirm. it needs Manage Server, Administrator, or edit access to that page, and it's logged in your mod log like any other settings change.
+
+- **general** - prefixes, timezone, brand color, welcome and leave messages, auto-roles, auto-response exemptions, suggestions, the weekly digest, and which of those are on. the bot's own nickname, avatar, banner and bio aren't in it, and neither are sticky messages, custom commands, auto-responses, reaction roles or voice hubs.
+- **moderation** - the mod log channel and its toggles, filters and what they do, bot detection, raid mode, jail, the warn ladder, minimum account age, `/snipe`, and the rest of the misc settings. word lists, fake permissions and antinuke aren't in it.
+- **tickets** - ticket defaults, claiming and ratings, and modmail. panels aren't in it.
+- **fun** - birthday announcements: the channel, role and message. counting, starboard and giveaways aren't in it.
+
+leveling has the same thing, plus slash commands for it - see [copying leveling settings](/docs/leveling#settings).
+
+the file names channels and roles by their discord ids, so in a different server anything that server doesn't have is left out (the preview says how many). if none of a setting's channels or roles exist there, the server keeps its own for that setting instead of losing it.
+
 ## mentions in messages {#mentions}
 
 a mention you put in a message taz sends now actually pings, instead of rendering as a chip that notifies nobody. that includes `{user}` - a welcome message using it will ping the member who just joined.

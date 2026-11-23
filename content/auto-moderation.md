@@ -16,11 +16,13 @@ every catch on this page - keyword, spam, link, mass mention - posts to your mod
 
 a blocked nickname gets *replaced*, not cleared - clearing falls back to the member's real username, which is usually what tripped the filter in the first place. it becomes `username` by default; set your own with `/automod settings nicknameplaceholder`, the "nickname placeholder" button under `/mod menu` → filters, or the nickname filter panel on the dashboard's moderation page. taz won't accept a placeholder your own word list blocks, since it would just get caught again the moment it was applied.
 
+every list checks nicknames as well as messages, unless you turn that off for it: `/automod wordlist config option:Toggle checking nicknames`, or "check nicknames too" in the list's settings on the dashboard. that's for a list that only matters in chat, like spoilers. switching the nickname filter off stops nickname checks for every list.
+
 ::: commands
 - `/automod wordlist create` - start a new filter category.
-- `/automod wordlist config` - add or remove phrases, and tune a category's action (delete, warn, timeout).
+- `/automod wordlist config` - add or remove phrases, switch a list on or off, or set whether it checks nicknames.
 - `/automod wordlist list` - see every category and what's in it.
-- `/automod wordlist exempt | unexempt key: channel: role:` - skip one list for messages in a channel (or a whole category) or from a role, like profanity in an 18+ channel, while your other lists still apply there. nicknames are always checked. on the dashboard it's in the list's own settings.
+- `/automod wordlist exempt | unexempt key: channel: role:` - skip one list for messages in a channel (or a whole category) or from a role, like profanity in an 18+ channel, while your other lists still apply there. this doesn't change which nicknames are checked. on the dashboard it's in the list's own settings.
 :::
 
 ## spam & link filters

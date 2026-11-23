@@ -31,7 +31,7 @@ taz watches a youtube channel and posts in your server when a new video goes up 
 
 ::: commands
 - `/announcements youtube add youtube: channel: mention: role: message: livemessage:` - start watching a channel. `channel` is where the announcement posts; `mention` is none (the default), `@everyone`, `@here`, or a role.
-- `/announcements youtube edit youtube:` - change the post channel, mention, either message, or whether this watch is active.
+- `/announcements youtube edit youtube:` - change the post channel, mention, either message, how [shorts](#youtube-shorts) are posted, or whether this watch is active.
 - `/announcements youtube addmentionrole` / `removementionrole` - ping more than one role on an upload - add them one at a time.
 - `/announcements youtube remove youtube:` - stop watching a channel.
 - `/announcements youtube list` - every channel this server watches, and where each one posts.
@@ -57,6 +57,18 @@ taz needs permission to send messages (and embed links, for the embed version) i
 ### live streams and premieres {#youtube-live}
 
 youtube lists a stream as soon as it's scheduled - including the one OBS makes for you when you set up a broadcast - long before anyone can watch it. taz doesn't post it then. she checks back about once a minute around the scheduled time (every few minutes otherwise) and posts the live message once the stream has actually started. a scheduled premiere works the same way, but posts with the new video message, since it's a video. a stream that's never started is forgotten after a week, and one that's deleted or made private before it starts isn't posted at all.
+
+### shorts {#youtube-shorts}
+
+taz can tell a short from a regular video. by default a short is posted like any other video, with the same message and ping. set `shorts:` on `/announcements youtube edit` (or "shorts" on the dashboard) to change that:
+
+::: commands
+- **like any other video** - the default.
+- **separately** - shorts get their own message (`shortsmessage:`, defaulting to *"{channelTitle} just posted a short: **{title}**"* and the link) and their own ping (`shortsmention:` and `shortsrole:`), so a "shorts" role can follow them without everyone else getting pinged.
+- **don't post them** - only regular videos and streams are posted.
+:::
+
+if youtube can't be asked whether a video is a short, it's posted as a regular video rather than skipped.
 
 ## announcements that live elsewhere {#elsewhere}
 
