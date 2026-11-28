@@ -89,6 +89,8 @@ two cross-server leaderboards, ranking every server taz is in against each other
 
 you can hide yourself from the global leaderboard with [`/me leaderboards state:hidden`](/docs/profile#me); a server can hide itself entirely from the dashboard's counting settings.
 
+the dashboard's counting section can also export your server's counts as a CSV: how many numbers each member has counted in each channel, with each channel's current and highest number.
+
 ## image tools {#image-tools}
 
 captions, filters, and a compatibility card, all built to work on animated (GIF/WebP) avatars, not just static ones - a captioned or filtered animated avatar stays animated.

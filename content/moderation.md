@@ -69,7 +69,7 @@ mod-log posts and taz's replies say which case an action became, so "see case #1
 - `/case delete number:` - remove a case that shouldn't be there. Manage Server only, logged, and it doesn't undo the action itself.
 :::
 
-the dashboard's moderation page has a **cases** tab for all of this - filter by person or action, click a name to see just theirs, edit reasons and add notes. the **audit log** tab next to it shows everything taz has logged; click any name there to filter to that person, and export what you're looking at as a CSV.
+the dashboard's moderation page has a **cases** tab for all of this - filter by person or action, click a name to see just theirs, edit reasons and add notes, and export the cases you're looking at as a CSV. the **warns** tab exports every warn that hasn't fallen off the same way. the **audit log** tab next to it shows everything taz has logged; click any name there to filter to that person, and export what you're looking at as a CSV.
 
 ## temporary roles {#temporary-roles}
 

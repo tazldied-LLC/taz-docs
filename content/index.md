@@ -11,3 +11,7 @@ new server? every module's own menu - `/mod menu`, `/level menu`, `/ticket menu`
 ::: note
 a command that asks for a channel - `/counting add`, `/general settings welcomechannel` and the rest - doesn't need one: run it in the channel you mean and taz uses that one (for a category, the category it's in). discord sometimes refuses a picked channel with *"A channel id specified is invalid"* before taz ever sees the command, and running it in the channel itself gets around that. if taz can't see or post in the channel, she says which permission she's missing. the same refusal can happen with a role (*"A role id specified is invalid"*); there's no run-it-here trick for roles, so set that one from the [dashboard](/dashboard) instead.
 :::
+
+::: note
+no server? taz can go on your own discord account too, for her fun and utility commands in DMs and group chats - see [on your own account](/docs/profile#your-account).
+:::

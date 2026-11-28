@@ -40,6 +40,22 @@ it doesn't touch a server's own records about you - warns, bans, ticket bans, ti
 
 separately: when taz is removed from a server, everything she stored for that server is deleted 90 days later, unless she's added back before then.
 
+## on your own account {#your-account}
+
+taz can also be added to your own discord account instead of a server, from [taz.bot/invite](/invite) ("add to my account"). her fun and utility commands then come with you into DMs, group chats and servers she isn't in:
+
+::: commands
+- `/pfp`, `/banner`, `/caption`, `/imgfx`, `/gif` - profile pictures, banners and image tools.
+- `/cats`, `/dogs`, `/flip`, `/roll`, `/ship` - the classics.
+- `/remindme amount: unit: what:` - a reminder. outside taz's servers it always comes as a DM, since she can't post in that chat.
+- `/me` - your profile and [your data](#your-data), same as anywhere.
+- `/info`, `/help` - `/help` there only lists the commands that work there.
+:::
+
+everything else - moderation, levels, counting, tickets and the rest - needs taz in the server itself. in a server that limits outside apps, discord may show her replies only to you.
+
+when you use her outside her servers, taz only gets the command you ran, what you picked in it, and who you are. she can't read that chat's messages or see who else is in it.
+
 ## per-server birthday & age visibility {#birthday-override}
 
 the `visible`/`age_visible` toggles on `/me birthday` are the global defaults, but any one server can override either one without touching those defaults - handy if you want your birthday (or just your age) visible everywhere except one rowdy server, or the reverse. those overrides live on [`/birthday hide|show|reset`](/docs/fun#birthdays) and `/birthday hideage|showage|resetage`, run in the server you want to override - birthday and age are overridden independently of each other.
