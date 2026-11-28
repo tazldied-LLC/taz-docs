@@ -1,1 +1,171 @@
-__PLACEHOLDER__
+---
+title: customization
+description: every server runs its own rules - branding, welcome/leave messages, sticky messages, scheduled announcements, and custom commands all live under /general.
+order: 6
+icon: fa-palette
+card: branding, welcome/leave messages, sticky messages, scheduled announcements, custom commands, and join-to-create voice hubs.
+---
+
+every server runs its own rules. branding, welcome/leave messages, sticky messages, scheduled announcements, and custom commands all live under `/general`, or the dashboard's general settings page.
+
+## branding {#branding}
+
+::: commands
+- `/general settings embedcolor | clearembedcolor` - taz's brand color in every menu/status embed - taz plus. free servers get the default pink.
+- `/general settings nickname | clearnickname` - how taz is named in your server. free.
+- `/general profile avatar | clearavatar` - a per-server avatar for taz. free.
+- `/general profile banner | clearbanner | bio | clearbio` - a per-server banner and bio - taz plus.
+:::
+
+a new avatar or banner is checked against taz's image rules before it's saved: no nudity or sexually explicit content (suggestive is fine), nothing graphic or gory, no hate symbols, and nothing about known sex offenders. if an image breaks one, it isn't saved. a link is saved as the image itself, so changing what's at the link later doesn't change taz's avatar.
+
+## welcome & leave messages {#welcome-leave}
+
+::: commands
+- `/general settings welcomechannel | welcomemessage` - where and what taz posts when someone joins.
+- `/general settings leavechannel | leavemessage` - same, for when someone leaves.
+:::
+
+bots that join or leave are skipped by default. turn on "welcome bots too" or "announce bots too" with `/general toggle`, in `/general menu`, or on the dashboard if you want them announced as well.
+
+both support `{user}`, `{username}`, `{server}`, and `{memberCount}` placeholders, and can be sent as plain text or a full embed (title, color, image, fields) - the embed builder is dashboard-only. in any message box on the dashboard, typing `@` opens a dropdown of your roles (plus `@everyone` and `@here`) and `#` one of your channels, and the mention is inserted wherever your cursor is. `/general menu` has its own welcome/leave screens too, each with a "create a channel for this" button next to the channel picker - the dashboard's welcome/leave channel pickers have the same button.
+
+## sticky messages {#sticky-messages}
+
+::: commands
+- `/general sticky set | remove | list` - a message that stays pinned to the bottom of a channel, reposting itself whenever someone else posts.
+:::
+
+## suggestions {#suggestions}
+
+members post an idea with `/suggest post`, everyone votes with 👍 / 👎 buttons (one vote each, and you can change or take it back), and staff mark it approved, denied, under consideration or implemented. the message recolors itself to match, voting closes once staff have decided, and the author gets a dm (unless they've opted out of dms in `/me`).
+
+::: commands
+- `/suggest post idea: anonymous:` - open to everyone once suggestions are set up. `anonymous` only works where the server allows it. suggestions up to 1000 characters.
+- `/suggest approve | deny | consider | implement suggestion: reason:` - staff only - see below for who. the suggestion autofills as you type - search by number or by what it says - and leaves out ones already in that state. the reason is optional and shows on the suggestion and in the author's dm.
+- `/suggest reopen suggestion:` - staff only. puts a decided suggestion back to pending, which reopens voting.
+- `/suggest info suggestion:` - staff only. who posted it, the votes, what staff decided and a link to it. this is how staff see who wrote an anonymous suggestion - anonymous hides the name from the channel, not from staff.
+- `/general suggestions channel | clearchannel` - where suggestions are posted. setting a channel turns suggestions on, and nothing works until one is set. `/general toggle feature:suggestions` turns it off again.
+- `/general suggestions options` - `allow_anonymous` (off by default), `create_threads` to open a discussion thread on each one (off), `notify_author` to dm the author on a decision (on), and `cooldown_seconds` between one member's suggestions (60, or 0 for none).
+- `/general suggestions status` - the current setup.
+:::
+
+who counts as staff is the same [fake permissions](/docs/moderation#fake-permissions) system as `/ban` and `/lockdown`: anyone with Manage Server or Administrator, or any role or member you grant the `suggest` command to (`/mod fakeperms grant command:suggest`, or the dashboard's moderation page). one grant covers approve, deny, consider, implement, reopen and info. ordinary moderators aren't staff here unless you grant it - who decides on suggestions is its own question, and you get the same audit trail as any other grant. the staff commands are visible to everyone in discord's command list - like `/ban` - but only staff can use them, and the autofill shows nobody else anything. a suggestion containing a phrase from your [word filter](/docs/auto-moderation) is refused while the word filter is on, so taz can't be used to post something the filter would have caught. suggestions never ping anyone. decisions are written to your mod log (the **Suggestions** logging toggle on the moderation page), and the settings above are also on the dashboard's general settings page.
+
+## scheduled announcements {#scheduled-announcements}
+
+::: commands
+- `/announcements scheduled add | edit | remove | list` - write it once, taz posts it on a schedule - once (the default), daily, weekly, or monthly. no cap, free and taz plus alike.
+:::
+
+these live under their own command rather than `/general`, alongside youtube notifications - see the [announcements page](/docs/announcements) for the full write-up. the dashboard has a section for them too, same shape as sticky messages and custom commands.
+
+## auto-responses {#auto-responses}
+
+::: commands
+- `/general autoresponse add phrase: response: enabled:` - taz replies to a phrase automatically, with no prefix and no slash command - somebody just says the thing and she answers.
+- `/general autoresponse edit phrase:` - change the reply, or switch one off without deleting it.
+- `/general autoresponse remove | list` - delete one, or see every auto-response in this server.
+:::
+
+a phrase matches as a whole word, so "hi" doesn't fire on "this". the reply takes the same `{user}`, `{username}`, `{server}` and `{memberCount}` placeholders as everything else here. free servers get 10, taz plus is unlimited - and the dashboard's auto-responses section can exempt specific members or roles from them - nobody is exempt by default, Administrator and mod-bypass roles included.
+
+## custom commands {#custom-commands}
+
+your own commands. a custom command can reply, change someone's roles, DM someone, open one of your [forms](/docs/tickets-and-tools#forms), or several of those at once. build them on the dashboard's general page, which has templates to start from: just a reply, role toggle, verify, open a form, shoutout, rules, and links.
+
+::: commands
+- `/general custom add trigger: response: slash: description: private: cooldown:` - make a simple one from Discord. everything else (options, actions, buttons, limits) is on the dashboard.
+- `/general custom edit | remove | list` - change, delete, or list them. `list` shows what each one does.
+:::
+
+every custom command works with your server's prefix (`{prefix}trigger`). turn on **slash** to also register it as a real `/trigger` command. a server can have up to 100 custom commands. free servers can make 25 of them slash commands, taz plus 75.
+
+- **description:** a line saying what the command does, up to 100 characters. it shows in `/general custom list` and on the dashboard, and under the command in Discord's command menu when it's a slash command.
+- **reply:** text or an embed, with the `{user}`, `{username}`, `{server}` and `{memberCount}` placeholders. `{count}` is how many times the command has been used and `{usercount}` how many times the person running it has ("that's hug #{count}"). counting starts the first time a command uses them. add up to 9 more replies and taz picks one at random each time. the reply can be empty when the command does something else.
+- **options:** up to 5 things members fill in - a member, some text, or a number. each one becomes a placeholder named after it, so an option called `member` fills `{member}` (and `{member.name}` with their username). a member option only pings if the reply mentions it. with the prefix, options go in order after the trigger, and the last text option takes the rest of the message.
+- **actions:** give, take away or toggle a role, for whoever ran it or for a member option; send a DM; or open a form. a role change can last a set time, like an event pass for 24 hours: a given role comes back off when it's up, and a taken one comes back. a role someone already had for good isn't put on a timer. taz won't hand out a role with staff permissions (Administrator, Manage Server, Manage Roles, Manage Channels, Manage Webhooks, Ban or Kick Members), or one above her own. DMs say which server they came from, and `/me dms` blocks them like any other.
+- **opening a form** only works on slash commands, because the link is private. it's the same one-time link as `/form`.
+- **link buttons:** up to 5 under the reply.
+- **who and where:** limit a command to some roles or channels (picking a category covers its channels), and add a cooldown per member. people with Manage Server skip the role list and the cooldown. cooldowns reset if taz restarts.
+- **private replies** (slash only): only the person who ran it sees the reply.
+
+## voice hubs {#voice-hubs}
+
+a hub is a voice channel that hands out voice channels: join it and taz makes you your own, moves you into it, and deletes it once everyone's left. she waits 10 seconds before deleting, so dropping out and straight back in doesn't cost you the channel. free servers get 1 hub, taz plus is unlimited. set them up with `/voice hub`, or under "join-to-create" on the dashboard's general page, which can also create the hub channel for you.
+
+::: commands
+- `/voice hub add channel: category: name_template: user_limit:` - turns a voice channel into a hub. new channels go in `category` (the hub's own by default), get their name from `name_template` (`{username}'s channel` by default - `{username}` and `{displayname}` work), and hold up to `user_limit` people (0, the default, means no limit; the most is 99). adding a hub turns join-to-create on.
+- `/voice hub edit channel:` - change any of those on an existing hub.
+- `/voice hub remove channel:` - stops a channel being a hub. channels it already made stay until they empty out.
+- `/voice hub list` - every hub and how it's set up.
+- `/voice toggle state:` - pause join-to-create without losing your hubs.
+:::
+
+`/voice hub` and `/voice toggle` need Manage Server (or a dashboard grant on general - `hub list` only needs view access).
+
+### owning a channel {#voice-hub-owners}
+
+whoever joined the hub owns the channel it made. by default the owner can rename it and change its settings (bitrate, user limit and so on) and move, server-mute and server-deafen people in it, all from discord's own channel settings and right-click menu, and only in their own channel. each of those can be turned off per hub with the `owner_` options on `add` and `edit`. an owner can't edit the channel's permissions in discord, so the only say they get over who joins is `/voice lock`.
+
+::: commands
+- `/voice lock` / `unlock` - stop new people joining your channel, or let them in again. whoever's already in can stay.
+- `/voice kick user:` - disconnect someone from your channel.
+- `/voice transfer user:` - hand your channel to someone else in it.
+- `/voice claim` - take over a channel whose owner has left. anyone still in it can.
+:::
+
+these are open to every member, but only work on a channel you own (or, for `claim`, one whose owner has left).
+
+new channels copy their category's permissions, so whoever can't see or join that category can't see or join them either. taz needs Manage Channels, Manage Roles and Move Members to make channels, set them up and move people in - without those, joining a hub does nothing - and discord only lets her give an owner permissions she has herself. a server can have at most 50 of these channels open at once, a safety net well under discord's 500-channel limit. making and deleting them stays out of your mod log, so a busy evening doesn't bury everything else.
+
+## server timezone {#timezone}
+
+every time taz shows or schedules goes by your server's timezone: scheduled announcements, birthday announcements (a birthday starts at midnight there), the daily xp cap, the analytics heatmaps, ticket and modmail transcripts, and form close dates. it's UTC until you pick one.
+
+::: commands
+- `/general settings timezone timezone:` - an autocompleting list of real timezones (`America/New_York` and friends). daylight saving is handled for you. also on the dashboard's general page, under "timezone".
+:::
+
+discord's own timestamps (the ones that show "in 2 hours" or a date) already appear in each person's own time, so those don't change.
+
+## other settings
+
+::: commands
+- `/general settings prefix` - the text-command prefix, shared with moderation's prefix commands.
+- `/general settings extraprefixes prefixes:` - up to 5 more prefixes that also work, separated by spaces (`none` clears them) - handy while a server moves from one prefix to another. the main prefix is the one taz shows in examples. also on the dashboard's general page, under "other prefixes".
+- `/general settings addautorole | removeautorole` - roles granted automatically to every new member.
+- `/general settings prefixpermissions` - off by default. turn it on to hold text commands to the same per-channel permissions as slash commands, instead of letting them run anywhere the member can type.
+- `/general toggle feature: state:` - switch welcome messages, leave messages, or auto-roles off without clearing what you configured for them.
+- `/general status` - everything on this page as it currently stands, in one embed.
+:::
+
+::: note
+almost everything here also has an equivalent on the [dashboard](/dashboard)'s general settings page, including a live preview for embed-based messages.
+:::
+
+## copying settings to another server {#copy-settings}
+
+the dashboard's general, moderation, tickets and fun pages each end with a "copy settings" section: download that page's settings as a file, and load one back here or into another server. loading shows what it would change and changes nothing until you confirm. it needs Manage Server, Administrator, or edit access to that page, and it's logged in your mod log like any other settings change.
+
+- **general** - prefixes, timezone, brand color, welcome and leave messages, auto-roles, auto-response exemptions, suggestions, the weekly digest, which of those are on, custom commands and auto-responses. the bot's own nickname, avatar, banner and bio aren't in it, and neither are sticky messages, reaction roles or voice hubs, since those belong to channels and messages on the server they're on.
+- **moderation** - the mod log channel and its toggles, filters and what they do, word lists, bot detection, raid mode, jail, the warn ladder, minimum account age, `/snipe`, and the rest of the misc settings. fake permissions aren't in it.
+- **tickets** - ticket defaults, claiming and ratings, modmail, and ticket panels. a panel that's already posted on the server you load into is edited in place; a new one still needs sending.
+- **fun** - birthday announcements, the starboard, and the counting rules (bans, math, deleting chatter, mistakes, milestones). counting channels, everyone's counts and giveaways aren't in it.
+- **antinuke** - on the moderation page's antinuke tab, for the server owner and antinuke managers only: the rules and limits, punishment, alerts, trusted roles, and whether it's on. trusted users and managers are never in the file, so loading one can't trust anybody.
+
+leveling has the same thing, plus slash commands for it - see [copying leveling settings](/docs/leveling#settings).
+
+lists - word lists, custom commands, auto-responses and ticket panels - are added to, not swapped out: one with the same name as something already there replaces it, a new one is added, and nothing that's only on the server you load into is deleted. they go through the same checks and [taz plus](/plus) limits as adding them by hand, so anything over the limit, or that taz would refuse, is named in the preview and skipped.
+
+the file names channels, roles and custom emojis by their discord ids, so in a different server anything that server doesn't have is left out (the preview says how many). if none of a setting's channels or roles exist there, the server keeps its own for that setting instead of losing it. custom command actions that give a missing role or open a form from the other server are left out the same way.
+
+## mentions in messages {#mentions}
+
+a mention you put in a message taz sends now actually pings, instead of rendering as a chip that notifies nobody. that includes `{user}` - a welcome message using it will ping the member who just joined.
+
+only mentions *you* typed count. anything a placeholder fills in is inert, so a member who renames themselves to `@everyone` can't turn your welcome message into a mass ping.
+
+::: note
+discord never sends a notification for a mention inside an **embed** - that's discord's own behaviour, not a taz setting. if you want a message to actually ping, it has to be in plain text mode. the mention still renders as a proper chip either way.
+:::
